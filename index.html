@@ -1,0 +1,1806 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>グスクラボ運営ハンドブック</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --surface-2:#f4f1ea;
+  --border:#e3ddd0;
+  --ink:#2a2622;
+  --ink-soft:#726a5c;
+  --accent:#b5542f;
+  --accent-ink:#fff8ef;
+  --primary:#1f3a5f;
+  --primary-ink:#fdf9f0;
+  --ok:#3f7d52;
+  --ok-bg:#e4efe4;
+  --pending:#9c8f76;
+  --pending-bg:#eee6d4;
+  --danger:#a23c2f;
+  --danger-bg:#f6e4df;
+  --shadow:0 8px 24px -14px rgba(42,38,34,0.18);
+  --radius:10px;
+  --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+  --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+}
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0;}
+a{color:var(--primary);}
+button{font-family:var(--sans);cursor:pointer;}
+input,textarea{font-family:var(--sans);}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
+::selection{background:var(--accent);color:var(--accent-ink);}
+.num{font-variant-numeric:tabular-nums;}
+.modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 55%),
+             radial-gradient(circle at 85% 85%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%),
+             color-mix(in srgb, var(--ink) 45%, transparent);}
+.lock-card{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:36px 32px;text-align:center;}
+.lock-mark{width:52px;height:52px;margin:0 auto 16px;border-radius:12px;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.lock-card h1{font-size:20px;font-weight:700;margin-bottom:6px;}
+.lock-card p.lead{color:var(--ink-soft);font-size:13px;margin:0 0 22px;}
+.lock-card input[type="password"]{width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-size:16px;letter-spacing:0.04em;}
+.lock-card .err{min-height:20px;color:var(--danger);font-size:13px;margin-top:8px;}
+.lock-btn{margin-top:16px;width:100%;padding:12px 14px;border:none;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-size:15px;font-weight:700;}
+.lock-btn[disabled]{opacity:0.6;}
+.lock-cancel{margin-top:8px;width:100%;padding:11px 14px;border:1px dashed var(--border);border-radius:8px;background:transparent;color:var(--primary);font-size:13px;font-weight:700;}
+.lock-note{margin-top:20px;font-size:11.5px;color:var(--ink-soft);line-height:1.6;border-top:1px dashed var(--border);padding-top:14px;}
+#app{min-height:100vh;display:flex;flex-direction:column;background:var(--bg);}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.topbar .brand{display:flex;flex-direction:column;gap:2px;margin-right:auto;}
+.topbar .brand .kicker{font-size:11px;letter-spacing:0.12em;color:var(--accent);font-weight:700;text-transform:uppercase;}
+.topbar .brand h1{font-size:17px;font-weight:700;}
+.topbar .brand .sub{font-size:12px;color:var(--ink-soft);}
+.modeswitch{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px;gap:2px;}
+.modeswitch button{border:none;background:transparent;color:var(--ink-soft);padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;}
+.modeswitch button.active{background:var(--primary);color:var(--primary-ink);}
+.save-btn,.login-btn{border:none;border-radius:8px;background:var(--accent);color:var(--accent-ink);padding:9px 18px;font-size:13px;font-weight:700;white-space:nowrap;}
+.login-btn{background:var(--surface-2);color:var(--ink);border:1px solid var(--border);}
+.save-btn[disabled]{opacity:0.6;cursor:default;}
+.status-pill{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid var(--border);color:var(--ink-soft);white-space:nowrap;}
+.status-pill.ok{color:var(--ok);border-color:color-mix(in srgb, var(--ok) 40%, var(--border));background:var(--ok-bg);}
+.status-pill.warn{color:var(--danger);border-color:color-mix(in srgb, var(--danger) 40%, var(--border));background:var(--danger-bg);}
+.layout{display:flex;flex:1;min-height:0;}
+.sidenav{width:216px;flex:none;border-right:1px solid var(--border);background:var(--surface);padding:20px 12px;position:sticky;top:57px;align-self:flex-start;height:calc(100vh - 57px);overflow-y:auto;}
+.sidenav .progress-chip{display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:0 4px 16px;font-size:12px;color:var(--ink-soft);}
+.sidenav .progress-chip b{font-family:var(--serif);color:var(--ink);font-size:15px;}
+.sidenav a{display:block;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--ink-soft);text-decoration:none;font-weight:500;}
+.sidenav a:hover{background:var(--surface-2);color:var(--ink);}
+main{flex:1;min-width:0;padding:28px 32px 80px;}
+.wrap{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:36px;}
+section.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);}
+section.card > h2{font-size:19px;font-weight:700;margin-bottom:4px;display:flex;align-items:baseline;gap:10px;}
+section.card > h2 .no{color:var(--accent);font-size:13px;font-family:var(--sans);font-weight:700;}
+section.card > .desc{font-size:12.5px;color:var(--ink-soft);margin-bottom:16px;}
+section.card .label{font-size:12.5px;color:var(--ink-soft);font-weight:700;margin:18px 0 8px;}
+section.card .label:first-of-type{margin-top:0;}
+dl.kv{display:grid;grid-template-columns:120px 1fr;gap:10px 16px;margin:0;}
+dl.kv dt{font-size:12px;color:var(--ink-soft);padding-top:2px;}
+dl.kv dd{margin:0;font-size:14px;}
+dl.kv dd ul{margin:2px 0 0;padding-left:18px;}
+.concept-box{margin-top:16px;padding:14px 16px;background:var(--surface-2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;font-size:13.5px;color:var(--ink);}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+table th{text-align:left;background:var(--surface-2);color:var(--ink-soft);font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase;font-weight:700;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+table tr:last-child td{border-bottom:none;}
+table tr.total td{font-weight:700;background:var(--surface-2);}
+table td.time{white-space:nowrap;font-weight:700;color:var(--primary);}
+.pillrow{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--ink-soft);}
+.seats-pill{display:inline-block;margin-top:12px;font-size:12px;padding:6px 14px;border-radius:999px;background:var(--ok-bg);border:1px solid color-mix(in srgb, var(--ok) 35%, var(--border));color:var(--ok);font-weight:700;}
+.seats-pill.full{color:var(--danger);border-color:color-mix(in srgb, var(--danger) 35%, var(--border));background:var(--danger-bg);}
+.subtotal-line{display:flex;justify-content:space-between;padding:10px 4px;font-size:13.5px;font-weight:700;}
+.balance-box{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-radius:10px;margin-top:16px;background:var(--ok-bg);border:1px solid color-mix(in srgb, var(--ok) 35%, var(--border));}
+.balance-box.neg{background:var(--danger-bg);border-color:color-mix(in srgb, var(--danger) 35%, var(--border));}
+.balance-box .blabel{font-size:12.5px;color:var(--ink-soft);}
+.balance-box .bamount{font-family:var(--serif);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ok);}
+.balance-box.neg .bamount{color:var(--danger);}
+ul.plain{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;}
+ul.plain li{font-size:13.5px;padding-left:16px;position:relative;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent);}
+.checklist{display:flex;flex-direction:column;gap:7px;}
+.check-row{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;padding:5px 2px;}
+.check-row .box{flex:none;width:17px;height:17px;border-radius:5px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin-top:1px;color:var(--accent-ink);font-size:11px;}
+.check-row.done .box{background:var(--ok);border-color:var(--ok);}
+.check-row.done span.txt{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--pending);}
+.cat-block{border-top:1px solid var(--border);padding-top:14px;margin-top:14px;}
+.cat-block:first-child{border-top:none;padding-top:0;margin-top:0;}
+.cat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.cat-head h3{font-size:14.5px;font-weight:700;}
+.cat-count{font-size:11.5px;color:var(--ink-soft);background:var(--surface-2);border-radius:999px;padding:3px 9px;border:1px solid var(--border);}
+.cat-count.full{color:var(--ok);}
+.speaker-card{border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--surface-2);}
+.speaker-card + .speaker-card{margin-top:12px;}
+.speaker-card .name{font-family:var(--serif);font-size:16px;font-weight:700;}
+.speaker-card .title{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:6px;}
+.speaker-card .bio{font-size:13px;color:var(--ink-soft);}
+footer.foot{text-align:center;font-size:11.5px;color:var(--ink-soft);padding:24px 0 40px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.field label{font-size:11.5px;color:var(--ink-soft);font-weight:700;letter-spacing:0.02em;}
+.field input[type="text"], .field input[type="number"], .field textarea{width:100%;padding:9px 11px;border-radius:7px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);font-size:13.5px;}
+.field textarea{resize:vertical;min-height:64px;line-height:1.6;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+.list-lines{display:flex;flex-direction:column;gap:8px;}
+.line-row{display:flex;gap:8px;align-items:flex-start;}
+.line-row input[type="text"]{flex:1;}
+.row-x{flex:none;width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--danger);font-size:14px;line-height:1;}
+.row-x:hover{background:var(--danger-bg);}
+.add-btn{align-self:flex-start;margin-top:4px;border:1px dashed var(--border);background:transparent;color:var(--primary);padding:8px 14px;border-radius:7px;font-size:12.5px;font-weight:700;}
+.add-btn:hover{background:var(--surface-2);}
+.edit-table-row{display:grid;gap:8px;align-items:start;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--border);}
+.edit-table-row:last-of-type{border-bottom:none;}
+.chk-row{display:flex;align-items:center;gap:9px;}
+.chk-row input[type="checkbox"]{width:17px;height:17px;accent-color:var(--ok);flex:none;}
+.chk-row input[type="text"]{flex:1;}
+.cat-name-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+.cat-name-row input[type="text"]{font-family:var(--serif);font-weight:700;font-size:14.5px;}
+.ticket-row{display:flex;gap:10px;flex-wrap:wrap;align-items:end;border-bottom:1px dashed var(--border);padding-bottom:10px;margin-bottom:10px;}
+.ticket-row:last-of-type{border-bottom:none;}
+.ticket-row .field{margin-bottom:0;}
+.tw-tier{width:180px;flex:1 1 180px;}
+.tw-num{width:110px;}
+.computed{padding:9px 11px;border-radius:7px;background:var(--surface);border:1px solid var(--border);color:var(--ink-soft);font-size:13.5px;font-variant-numeric:tabular-nums;font-weight:700;min-width:110px;}
+.money-row{display:flex;gap:10px;align-items:end;margin-bottom:8px;}
+.money-row .mw-item{flex:1;}
+.money-row .mw-amt{width:140px;}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-bottom:18px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);}
+.legend-badge{width:22px;height:22px;border-radius:50%;background:var(--primary);color:var(--primary-ink);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none;}
+.label-palette-row{margin-bottom:16px;}
+.label-palette{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.label-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--surface);color:var(--ink);font-size:13px;font-weight:700;}
+.label-btn.active{border-color:var(--accent);background:var(--accent);color:var(--accent-ink);}
+.formation-block{border-top:1px solid var(--border);padding-top:16px;margin-top:16px;}
+.formation-block:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.formation-title-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+.formation-title-row h3{font-size:15px;font-weight:700;}
+.formation-title-row input{flex:1;font-family:var(--serif);font-weight:700;font-size:14.5px;}
+.hint{font-size:11.5px;color:var(--ink-soft);margin-bottom:12px;}
+.floorplan-wrap{position:relative;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface-2);cursor:crosshair;touch-action:manipulation;max-width:420px;}
+.floorplan-wrap.readonly{cursor:default;}
+.floorplan-svg{display:block;width:100%;height:auto;}
+.fp-stage{fill:var(--surface-2);stroke:var(--border);stroke-width:2;}
+.fp-seat{fill:var(--surface);stroke:var(--border);stroke-width:2;}
+.fp-row{stroke:var(--border);stroke-width:1;opacity:0.5;}
+.fp-aisle{stroke:var(--border);stroke-width:1;stroke-dasharray:4 4;opacity:0.7;}
+.fp-lobby{fill:var(--surface-2);stroke:var(--border);stroke-width:2;}
+.fp-desk{fill:var(--pending-bg);stroke:var(--border);}
+.fp-door{fill:var(--ok-bg);stroke:var(--border);}
+.fp-label{fill:var(--ink-soft);font-size:20px;font-family:var(--serif);}
+.fp-label-sm{fill:var(--ink-soft);font-size:13px;font-family:var(--sans);}
+.marker{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid var(--surface);box-shadow:0 2px 6px rgba(0,0,0,0.3);}
+.marker.editable{cursor:pointer;}
+.marker.editable:hover{outline:2px solid var(--danger);}
+@media (max-width:860px){
+  body{font-size:16px;}
+  .layout{flex-direction:column;}
+  .sidenav{position:static;width:auto;min-width:0;max-width:100%;height:auto;display:flex;overflow-x:auto;gap:6px;padding:10px 12px;border-right:none;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;}
+  .sidenav .progress-chip{display:none;}
+  .sidenav a{white-space:nowrap;padding:10px 13px;}
+  main{padding:16px 14px 70px;}
+  .wrap{gap:20px;}
+  section.card{padding:18px 16px;}
+  dl.kv{grid-template-columns:1fr;gap:4px 0;}
+  dl.kv dt{padding-top:10px;}
+  dl.kv dt:first-child{padding-top:0;}
+  .grid2{grid-template-columns:1fr;}
+  .floorplan-wrap{max-width:100%;}
+  .topbar{padding:10px 14px;gap:10px;}
+  .topbar .brand .kicker{display:none;}
+  .topbar .brand h1{font-size:16px;}
+  .topbar .brand{width:100%;}
+  .modeswitch{order:2;}
+  .status-pill{order:3;flex:1;text-align:center;}
+  .save-btn{order:4;width:100%;padding:12px 18px;}
+  .login-btn{order:4;width:100%;padding:12px 18px;}
+  .field input[type="text"], .field input[type="number"], .field textarea{font-size:16px;}
+  .row-x{width:36px;height:36px;font-size:16px;}
+  .add-btn{padding:11px 16px;font-size:13.5px;}
+  .modeswitch button{padding:10px 18px;font-size:14px;}
+  .label-btn{width:42px;height:42px;font-size:14px;}
+  .marker{width:32px;height:32px;margin:-16px 0 0 -16px;font-size:13px;}
+  table th, table td{padding:10px 10px;}
+  .chk-row input[type="checkbox"]{width:20px;height:20px;}
+}
+@media (prefers-reduced-motion:no-preference){
+  .save-btn, .login-btn, .modeswitch button, .add-btn, .row-x{transition:opacity .15s ease, background-color .15s ease;}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="kicker">Gusuku Lab Symposium 01</span>
+      <h1>グスクラボ運営ハンドブック</h1>
+      <span class="sub" id="brandSub"></span>
+    </div>
+    <div class="modeswitch" id="modeSwitchBox" hidden>
+      <button id="btnView" class="active" type="button">閲覧</button>
+      <button id="btnEdit" type="button">編集</button>
+    </div>
+    <span class="status-pill" id="statusPill">読み込み中…</span>
+    <button class="save-btn" id="btnSave" type="button" hidden>変更を保存して共有</button>
+    <button class="login-btn" id="btnLogin" type="button">編集者ログイン</button>
+    <button class="login-btn" id="btnLogout" type="button" hidden>ログアウト</button>
+  </header>
+  <div class="layout">
+    <nav class="sidenav" id="sidenav">
+      <div class="progress-chip"><span>準備進捗</span><b id="progressText">—</b></div>
+      <a href="#sec-overview">1. イベント概要</a>
+      <a href="#sec-speakers">2. 登壇者プロフィール</a>
+      <a href="#sec-schedule">3. 当日タイムスケジュール</a>
+      <a href="#sec-budget">4. 収支</a>
+      <a href="#sec-staff">5. 運営スタッフ</a>
+      <a href="#sec-prep">6. 準備スケジュール</a>
+      <a href="#sec-todo">7. 項目別やることリスト</a>
+      <a href="#sec-equipment">8. 必要備品チェックリスト</a>
+      <a href="#sec-formations">9. 会場・スタッフ配置</a>
+    </nav>
+    <main><div class="wrap" id="content"></div></main>
+  </div>
+</div>
+
+<div id="loginModal" class="modal-overlay" hidden>
+  <div class="lock-card">
+    <div class="lock-mark">&#127968;</div>
+    <h1>編集者ログイン</h1>
+    <p class="lead">コアメンバー用のパスワードを入力してください。</p>
+    <input id="pw" type="password" placeholder="パスワード" autocomplete="current-password" />
+    <div class="err" id="pwErr"></div>
+    <button class="lock-btn" id="pwBtn" type="button">ログイン</button>
+    <button class="lock-cancel" id="pwCancel" type="button">キャンセル</button>
+    <p class="lock-note">※閲覧はどなたでも自由にできます。編集・保存はコアメンバーのログインが必要です。</p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, setDoc, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+/* ============================================================
+   FIREBASE SETUP — replace with your own project's values.
+   See the setup guide for exactly where to get these.
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyB7hQCnXAL9aqACCnpenPyY9jMDLZcQxek",
+  authDomain: "gusukulab-handbook.firebaseapp.com",
+  projectId: "gusukulab-handbook",
+  storageBucket: "gusukulab-handbook.firebasestorage.app",
+  messagingSenderId: "366780142394",
+  appId: "1:366780142394:web:edaa67ae39662987607603"
+};
+/* This is a fixed internal login ID, not a real inbox — you create it
+   as a user in the Firebase console (Authentication > Users > Add user)
+   together with the password your core members will type in. */
+const EDITOR_EMAIL = "core@gusukulab-handbook.local";
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+const DOC_REF = doc(db, "handbook", "data");
+
+/* ============================================================
+   DEFAULT DATA — used until Firestore has a document, and as the
+   shape reference. The first editor who logs in and saves will
+   create the real Firestore document from this.
+   ============================================================ */
+const DEFAULT_DATA = {
+  "updated": "2026-08-30",
+  "overview": {
+    "name": "第一回 グスクラボ・シンポジウム",
+    "title": "グスクから見る祈りの島の考古学",
+    "subtitle": "〜 変わらぬ聖地、変わりゆく信仰 〜",
+    "datetime": "2026年10月31日（土）13:00〜17:00（開場12:30）",
+    "venue": "アイム・ユニバース てだこホール（小ホール）（浦添市仲間1丁目9-3）※オンライン参加も可",
+    "feeLines": [
+      "一般：前売 ¥4,500 ／ 当日 ¥5,000",
+      "高校生以下：前売 ¥2,500 ／ 当日 ¥3,000（当日受付で学生証提示を依頼・自己申告制）",
+      "振込先：T.R.Fの口座"
+    ],
+    "capacity": "全席自由席、定員300名（メモ上「300−25」の記載あり＝要確認・調整分の可能性）",
+    "capacityNumber": 300,
+    "deadline": "2026年10月24日（前売・オンライン申込み締切）",
+    "apply": "Googleフォーム（https://forms.gle/bBADyaWpdjry4Afg8、QRコードあり）。配信希望者はメールアドレス入力必須。",
+    "contact": "メールのみ／当日対応は智さん（糸数）",
+    "organizer": "グスクラボ（gusuku.lab@gmail.com）",
+    "venueUrl": "https://tedakohall.jp/?page_id=1732",
+    "concept": "岩・森・山・滝・島・洞窟など沖縄古来の聖地が、時代ごとにグスク・御嶽・葬所・神社などへ姿を変えてきた過程を、考古学を中心に歴史学・民俗学の視点も交えて総合的に考察する。「政治史」「民俗」を個別ではなく「聖地」という共通軸で横断的に読み解く試み。"
+  },
+  "speakers": [
+    {
+      "name": "武部 拓磨",
+      "title": "考古学者・グスク研究者",
+      "bio": "琉球大学で琉球史専攻、在学中に神職資格取得。備前国総社宮の神主を務める傍ら発掘調査にも従事。神職としての祭祀的視点と考古学を融合し「グスク支配者聖域君臨説」を提唱。Gusuku lab主宰。"
+    },
+    {
+      "name": "賀数 仁然",
+      "title": "琉球歴史文化ナビゲーター・研究家",
+      "bio": "沖縄女子短期大学非常勤講師、沖縄大学地域研究所特別研究員。ラジオパーソナリティ、放送作家、観光ナビゲーター、脚本家、歴史監修など多方面で活躍。"
+    },
+    {
+      "name": "横手 伸太郎",
+      "title": "名護市教育委員会 文化課",
+      "bio": "琉球大学大学院人文社会科学研究科人間科学専攻修了（修士）。喜界町・肝付町（鹿児島県）・沖縄市の文化財行政を経て2021年より名護市教育委員会に勤務。山城・玉製品・貿易陶磁器・鉄器生産などグスク時代の歴史的展開を研究。"
+    }
+  ],
+  "schedule": [
+    {
+      "time": "12:30",
+      "content": "開場・受付開始"
+    },
+    {
+      "time": "13:00",
+      "content": "開会挨拶・登壇者紹介"
+    },
+    {
+      "time": "13:15",
+      "content": "発表①武部拓磨「城塞化された祈りの場 ―グスクの成立」"
+    },
+    {
+      "time": "13:50",
+      "content": "発表②横手伸太郎「どこまで迫れる！？グスク聖域の謎に挑む考古学」"
+    },
+    {
+      "time": "14:25",
+      "content": "発表③武部拓磨「グスク廃城と神女組織 ―王府が創出した“神女の時代”」"
+    },
+    {
+      "time": "14:55",
+      "content": "休憩（15分間）"
+    },
+    {
+      "time": "15:15",
+      "content": "発表④賀数仁然「なんで、先祖崇拝なのに！？」"
+    },
+    {
+      "time": "15:50",
+      "content": "発表⑤武部拓磨「近代国家と聖地の再編 ―御嶽・グスクの神社化」"
+    },
+    {
+      "time": "16:25",
+      "content": "クロストーク「沖縄の聖地の未来を考える」"
+    },
+    {
+      "time": "16:55",
+      "content": "閉会挨拶"
+    }
+  ],
+  "dayOps": [
+    "事前受付：50音順、2名体制",
+    "当日受付：1名（空席分を販売、満席になれば立ち見のため待機）→『満席まであと◯◯名』のお知らせシート作成が必要",
+    "入口振分け係：1名（事前受付／当日受付の振り分け）",
+    "待機部屋・当日問い合わせ（メールチェック）係：1名（智さん）",
+    "現地（てだこホール）スタッフ：2名",
+    "配信：Zoom or YouTube／生配信 or アーカイブ配信を検討中（→アシタネワークス社と調整、担当：武部さん）",
+    "物販：賀数さんの書籍、グスクラボのグッズを販売予定（→当日の販売方法は再検討中）"
+  ],
+  "budget": {
+    "tickets": [
+      {
+        "tier": "一般前売",
+        "unitPrice": 4500,
+        "count": 0
+      },
+      {
+        "tier": "一般当日",
+        "unitPrice": 5000,
+        "count": 0
+      },
+      {
+        "tier": "高校生以下前売",
+        "unitPrice": 2500,
+        "count": 0
+      },
+      {
+        "tier": "高校生以下当日",
+        "unitPrice": 3000,
+        "count": 0
+      }
+    ],
+    "otherIncome": [
+      {
+        "item": "協賛収入",
+        "amount": 0
+      },
+      {
+        "item": "物販売上（書籍・グッズ）",
+        "amount": 0
+      }
+    ],
+    "expense": [
+      {
+        "item": "会場費",
+        "amount": 0
+      },
+      {
+        "item": "登壇謝金・交通費",
+        "amount": 0
+      },
+      {
+        "item": "宿泊費（必要な場合）",
+        "amount": 0
+      },
+      {
+        "item": "印刷費（チラシ・パンフレット等）",
+        "amount": 0
+      },
+      {
+        "item": "広報費",
+        "amount": 0
+      },
+      {
+        "item": "配信費（アシタネワークス）",
+        "amount": 0
+      },
+      {
+        "item": "備品・機材費",
+        "amount": 0
+      },
+      {
+        "item": "雑費",
+        "amount": 0
+      }
+    ],
+    "note": "申込人数はGoogleフォームの回答を集計して随時入力する。支出は見積・請求が確定次第この表を更新する。参考として、企画初期段階の予算感は原文ノート（運営マニュアル・チェックリスト（原文））の旧企画書ドラフトに記載あり（現行企画とは規模・構成が異なるため参考値扱い）。"
+  },
+  "staff": [
+    {
+      "name": "いとかずさとし（糸数）",
+      "role": "「智さん」＝申込フォーム管理、問い合わせ対応、当日待機部屋担当"
+    },
+    {
+      "name": "mako",
+      "role": "未定"
+    },
+    {
+      "name": "Mika",
+      "role": "未定"
+    },
+    {
+      "name": "Motoshi",
+      "role": "未定"
+    },
+    {
+      "name": "Takahiro miyajima",
+      "role": "未定"
+    },
+    {
+      "name": "yoko",
+      "role": "未定"
+    },
+    {
+      "name": "あやか",
+      "role": "未定"
+    },
+    {
+      "name": "あやこ",
+      "role": "未定"
+    },
+    {
+      "name": "さやか",
+      "role": "未定"
+    },
+    {
+      "name": "なわあい",
+      "role": "未定"
+    },
+    {
+      "name": "もとまさ",
+      "role": "未定"
+    },
+    {
+      "name": "健太郎",
+      "role": "未定"
+    },
+    {
+      "name": "和代",
+      "role": "未定"
+    },
+    {
+      "name": "夕季",
+      "role": "未定"
+    },
+    {
+      "name": "武部ココ",
+      "role": "未定"
+    },
+    {
+      "name": "武部拓磨",
+      "role": "登壇者／配信についてアシタネワークスとの打合せ担当"
+    },
+    {
+      "name": "玉城 成子",
+      "role": "未定"
+    },
+    {
+      "name": "金城将希",
+      "role": "未定"
+    }
+  ],
+  "dayRoles": [
+    {
+      "role": "受付（事前）",
+      "count": "2名"
+    },
+    {
+      "role": "受付（当日）",
+      "count": "1名"
+    },
+    {
+      "role": "入口振分け係",
+      "count": "1名"
+    },
+    {
+      "role": "待機部屋・問い合わせ対応",
+      "count": "1名（智さん）"
+    },
+    {
+      "role": "会場スタッフ",
+      "count": "2名"
+    },
+    {
+      "role": "司会",
+      "count": "未定"
+    },
+    {
+      "role": "撮影担当",
+      "count": "未定"
+    },
+    {
+      "role": "配信担当",
+      "count": "未定（調整中）"
+    },
+    {
+      "role": "タイムキーパー",
+      "count": "未定"
+    },
+    {
+      "role": "誘導担当",
+      "count": "未定"
+    }
+  ],
+  "prepSchedule": [
+    {
+      "month": "5月",
+      "plan": "Googleフォーム・URL・QRコード作成（担当：智さん）／5月22日 賀数さんと打合せ・チラシ確認／チラシ作成期限",
+      "status": "完了"
+    },
+    {
+      "month": "6月",
+      "plan": "チラシ配布",
+      "status": "完了"
+    },
+    {
+      "month": "7月",
+      "plan": "ポスター・フォーム・紹介文の完成、Instagram登壇者紹介開始、後援依頼、プレスリリース準備 等（詳細未定分あり）",
+      "status": "一部完了"
+    },
+    {
+      "month": "8月",
+      "plan": "横手さんと打合せ／申込み状況をみてメディアへの告知検討",
+      "status": "進行中（現在8月末）"
+    },
+    {
+      "month": "9月",
+      "plan": "告知本格化、協力依頼・メディア対応の追い込み、配布物・備品手配",
+      "status": "未着手・要計画"
+    },
+    {
+      "month": "10月",
+      "plan": "最終申込集計、当日運営体制の最終確認、リハーサル、前日準備、10/24前売締切、10/31本番",
+      "status": "未着手・要計画"
+    }
+  ],
+  "priority8": [
+    {
+      "text": "3人目の登壇者を最終決定する（横手さん確定済み）",
+      "checked": true
+    },
+    {
+      "text": "ポスター・フォーム・紹介文を告知開始水準まで完成させる",
+      "checked": false
+    },
+    {
+      "text": "Instagramで登壇者紹介を順次開始する",
+      "checked": false
+    },
+    {
+      "text": "シンポジウム専用リール動画を複数本準備する",
+      "checked": false
+    },
+    {
+      "text": "教育委員会・大学・博物館などへの後援・周知依頼を進める",
+      "checked": false
+    },
+    {
+      "text": "メディア向けプレスリリースを準備する",
+      "checked": false
+    },
+    {
+      "text": "当日パンフレットの構成を早めに検討する",
+      "checked": false
+    },
+    {
+      "text": "「なぜこのシンポジウムを開催するのか」というメッセージを磨き、全広報で一貫して伝える",
+      "checked": false
+    }
+  ],
+  "todoCategories": [
+    {
+      "category": "企画",
+      "items": [
+        {
+          "text": "テーマ・タイトルの最終決定",
+          "checked": true
+        },
+        {
+          "text": "サブタイトル作成",
+          "checked": true
+        },
+        {
+          "text": "シンポジウムの目的・コンセプト整理",
+          "checked": true
+        },
+        {
+          "text": "タイムスケジュール作成",
+          "checked": true
+        },
+        {
+          "text": "各講師の持ち時間決定（各発表35分）",
+          "checked": true
+        },
+        {
+          "text": "パネルディスカッションの有無決定（クロストークあり）",
+          "checked": true
+        },
+        {
+          "text": "質疑応答時間決定（クロストーク内で対応か要確認）",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "登壇者対応",
+      "items": [
+        {
+          "text": "全登壇者確定（武部拓磨・賀数仁然・横手伸太郎）",
+          "checked": true
+        },
+        {
+          "text": "登壇承諾取得",
+          "checked": true
+        },
+        {
+          "text": "行政への正式依頼（名護市教育委員会 横手さん分・後援依頼含む）",
+          "checked": false
+        },
+        {
+          "text": "講師プロフィール回収",
+          "checked": true
+        },
+        {
+          "text": "顔写真回収",
+          "checked": true
+        },
+        {
+          "text": "講演タイトル決定（全5講演分）",
+          "checked": true
+        },
+        {
+          "text": "講演概要回収",
+          "checked": false
+        },
+        {
+          "text": "謝金確認",
+          "checked": false
+        },
+        {
+          "text": "交通費確認",
+          "checked": false
+        },
+        {
+          "text": "宿泊確認（必要なら）",
+          "checked": false
+        },
+        {
+          "text": "当日昼食手配",
+          "checked": false
+        },
+        {
+          "text": "控室飲み物手配",
+          "checked": false
+        },
+        {
+          "text": "講演データ提出期限設定",
+          "checked": false
+        },
+        {
+          "text": "ホテル支払い（必要なら）",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "会場",
+      "items": [
+        {
+          "text": "会場予約確認（アイム・ユニバース てだこホール 小ホール）",
+          "checked": true
+        },
+        {
+          "text": "使用可能時間確認",
+          "checked": false
+        },
+        {
+          "text": "レイアウト作成",
+          "checked": false
+        },
+        {
+          "text": "マイク本数確認",
+          "checked": false
+        },
+        {
+          "text": "プロジェクター確認",
+          "checked": false
+        },
+        {
+          "text": "Wi-Fi確認",
+          "checked": false
+        },
+        {
+          "text": "駐車場確認",
+          "checked": false
+        },
+        {
+          "text": "控室確認",
+          "checked": false
+        },
+        {
+          "text": "アフター会場予約",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "デザイン・制作物",
+      "items": [
+        {
+          "text": "ポスター完成",
+          "checked": true
+        },
+        {
+          "text": "チラシ完成（2種：概要面／登壇者面）",
+          "checked": true
+        },
+        {
+          "text": "SNS用画像作成",
+          "checked": false
+        },
+        {
+          "text": "ストーリーズ画像作成",
+          "checked": false
+        },
+        {
+          "text": "リール動画素材準備",
+          "checked": false
+        },
+        {
+          "text": "サムネイル作成",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "申込管理",
+      "items": [
+        {
+          "text": "Googleフォーム完成",
+          "checked": true
+        },
+        {
+          "text": "自動返信メール確認",
+          "checked": false
+        },
+        {
+          "text": "定員設定（300名、料金区分あり）",
+          "checked": true
+        },
+        {
+          "text": "キャンセル対応方法決定",
+          "checked": false
+        },
+        {
+          "text": "問い合わせ先整理（メール対応・智さん）",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "category": "告知文",
+      "items": [
+        {
+          "text": "Instagram用",
+          "checked": true
+        },
+        {
+          "text": "Facebook用",
+          "checked": true
+        },
+        {
+          "text": "X用",
+          "checked": true
+        },
+        {
+          "text": "note用",
+          "checked": false
+        },
+        {
+          "text": "LINE用",
+          "checked": true
+        },
+        {
+          "text": "メール用",
+          "checked": false
+        },
+        {
+          "text": "プレスリリース用",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "category": "集客",
+      "items": [
+        {
+          "text": "告知開始日決定",
+          "checked": false
+        },
+        {
+          "text": "告知スケジュール作成",
+          "checked": false
+        },
+        {
+          "text": "カウントダウン企画",
+          "checked": false
+        },
+        {
+          "text": "登壇者紹介企画",
+          "checked": false
+        },
+        {
+          "text": "内容紹介企画",
+          "checked": false
+        },
+        {
+          "text": "過去研究紹介",
+          "checked": false
+        },
+        {
+          "text": "FAQ作成",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "協力依頼",
+      "items": [
+        {
+          "text": "大学",
+          "checked": false
+        },
+        {
+          "text": "博物館",
+          "checked": false
+        },
+        {
+          "text": "図書館",
+          "checked": false
+        },
+        {
+          "text": "教育委員会",
+          "checked": false
+        },
+        {
+          "text": "神社",
+          "checked": false
+        },
+        {
+          "text": "郷友会",
+          "checked": false
+        },
+        {
+          "text": "歴史団体",
+          "checked": false
+        },
+        {
+          "text": "考古学関係団体",
+          "checked": false
+        },
+        {
+          "text": "観光施設",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "メディア対応",
+      "items": [
+        {
+          "text": "新聞社",
+          "checked": false
+        },
+        {
+          "text": "テレビ",
+          "checked": false
+        },
+        {
+          "text": "ラジオ",
+          "checked": false
+        },
+        {
+          "text": "Webメディア",
+          "checked": false
+        },
+        {
+          "text": "地域情報誌",
+          "checked": false
+        },
+        {
+          "text": "プレスリリース送付先一覧作成",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "スポンサー・協力",
+      "items": [
+        {
+          "text": "協賛募集",
+          "checked": false
+        },
+        {
+          "text": "後援申請",
+          "checked": false
+        },
+        {
+          "text": "共催確認",
+          "checked": false
+        },
+        {
+          "text": "協力団体調整",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "SNS運営",
+      "items": [
+        {
+          "text": "開催まで毎週投稿",
+          "checked": false
+        },
+        {
+          "text": "リール動画制作",
+          "checked": false
+        },
+        {
+          "text": "ストーリーズ更新",
+          "checked": false
+        },
+        {
+          "text": "登壇者インタビュー",
+          "checked": false
+        },
+        {
+          "text": "リマインド投稿",
+          "checked": false
+        },
+        {
+          "text": "満席告知",
+          "checked": false
+        },
+        {
+          "text": "残席告知",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "配布物",
+      "items": [
+        {
+          "text": "当日パンフレット",
+          "checked": false
+        },
+        {
+          "text": "プログラム",
+          "checked": false
+        },
+        {
+          "text": "登壇者プロフィール",
+          "checked": false
+        },
+        {
+          "text": "会場案内",
+          "checked": false
+        },
+        {
+          "text": "アンケート",
+          "checked": false
+        },
+        {
+          "text": "名札",
+          "checked": false
+        },
+        {
+          "text": "スタッフ証",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "当日運営",
+      "items": [
+        {
+          "text": "司会決定",
+          "checked": false
+        },
+        {
+          "text": "受付担当決定（体制は決定済：個人名の割当は未定）",
+          "checked": false
+        },
+        {
+          "text": "撮影担当決定",
+          "checked": false
+        },
+        {
+          "text": "配信担当決定（アシタネワークスと調整中）",
+          "checked": false
+        },
+        {
+          "text": "タイムキーパー決定",
+          "checked": false
+        },
+        {
+          "text": "誘導担当決定",
+          "checked": false
+        },
+        {
+          "text": "スタッフ集合時間決定",
+          "checked": false
+        },
+        {
+          "text": "リハーサル日程決定",
+          "checked": false
+        },
+        {
+          "text": "開場・開演・休憩・閉会・撤収の当日進行確認",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "物販",
+      "items": [
+        {
+          "text": "賀数さんの書籍販売方法決定",
+          "checked": false
+        },
+        {
+          "text": "グスクラボグッズ販売方法決定",
+          "checked": false
+        }
+      ]
+    },
+    {
+      "category": "開催後対応",
+      "items": [
+        {
+          "text": "お礼投稿",
+          "checked": false
+        },
+        {
+          "text": "登壇者へのお礼",
+          "checked": false
+        },
+        {
+          "text": "協力者へのお礼",
+          "checked": false
+        },
+        {
+          "text": "アンケート集計",
+          "checked": false
+        },
+        {
+          "text": "写真整理",
+          "checked": false
+        },
+        {
+          "text": "動画編集",
+          "checked": false
+        },
+        {
+          "text": "アーカイブ公開検討",
+          "checked": false
+        },
+        {
+          "text": "次回案内",
+          "checked": false
+        }
+      ]
+    }
+  ],
+  "equipment": [
+    {
+      "text": "PC",
+      "checked": false
+    },
+    {
+      "text": "HDMI",
+      "checked": false
+    },
+    {
+      "text": "レーザーポインター",
+      "checked": false
+    },
+    {
+      "text": "プレゼンターリモコン",
+      "checked": false
+    },
+    {
+      "text": "延長コード",
+      "checked": false
+    },
+    {
+      "text": "録画機材",
+      "checked": false
+    },
+    {
+      "text": "カメラ",
+      "checked": false
+    },
+    {
+      "text": "三脚",
+      "checked": false
+    },
+    {
+      "text": "マイク",
+      "checked": false
+    },
+    {
+      "text": "バックアップPC",
+      "checked": false
+    },
+    {
+      "text": "USBメモリ",
+      "checked": false
+    },
+    {
+      "text": "『満席まであと◯◯名』お知らせシート",
+      "checked": false
+    },
+    {
+      "text": "名札・スタッフ証",
+      "checked": false
+    },
+    {
+      "text": "アンケート用紙・回収箱",
+      "checked": false
+    }
+  ],
+  "formations": [
+    {
+      "title": "受付前",
+      "markers": []
+    },
+    {
+      "title": "受付時",
+      "markers": []
+    },
+    {
+      "title": "公演開始時",
+      "markers": []
+    }
+  ]
+};
+
+let DATA = null;
+let mode = "view";
+let isEditor = false;
+let saving = false;
+
+function esc(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+  });
+}
+function yen(n){
+  var v = Math.round(Number(n) || 0);
+  var neg = v < 0;
+  var s = "¥" + Math.abs(v).toLocaleString("ja-JP");
+  return neg ? "−" + s : s;
+}
+
+/* ---------- path helpers ---------- */
+function pathParts(path){ return path.split(".").map(function(p){ return /^\d+$/.test(p) ? Number(p) : p; }); }
+function getPath(root, path){
+  var parts = pathParts(path), o = root;
+  for (var i=0;i<parts.length;i++){ if(o==null) return undefined; o = o[parts[i]]; }
+  return o;
+}
+function setPath(root, path, value){
+  var parts = pathParts(path), o = root;
+  for (var i=0;i<parts.length-1;i++){ o = o[parts[i]]; }
+  o[parts[parts.length-1]] = value;
+}
+function removeAt(root, path){
+  var parts = pathParts(path);
+  var idx = parts.pop();
+  var o = root;
+  for (var i=0;i<parts.length;i++){ o = o[parts[i]]; }
+  o.splice(idx, 1);
+}
+function templateFor(kind){
+  switch(kind){
+    case "speaker": return {name:"",title:"",bio:""};
+    case "schedule": return {time:"",content:""};
+    case "dayop": return "";
+    case "ticket": return {tier:"新しい区分",unitPrice:0,count:0};
+    case "otherincome": return {item:"",amount:0};
+    case "expense": return {item:"",amount:0};
+    case "staff": return {name:"",role:""};
+    case "dayrole": return {role:"",count:""};
+    case "prep": return {month:"",plan:"",status:""};
+    case "priority": return {text:"",checked:false};
+    case "equipment": return {text:"",checked:false};
+    case "category": return {category:"新しいカテゴリ", items:[]};
+    case "formation": return {title:"新しい場面", markers:[]};
+    case "item": return {text:"",checked:false};
+    default: return {};
+  }
+}
+
+/* ---------- budget calculations ---------- */
+function ticketSubtotal(t){ return (Number(t.unitPrice)||0) * (Number(t.count)||0); }
+function ticketTotalCount(){ return DATA.budget.tickets.reduce(function(s,t){ return s+(Number(t.count)||0); },0); }
+function ticketTotalAmount(){ return DATA.budget.tickets.reduce(function(s,t){ return s+ticketSubtotal(t); },0); }
+function otherIncomeTotal(){ return DATA.budget.otherIncome.reduce(function(s,r){ return s+(Number(r.amount)||0); },0); }
+function incomeTotal(){ return ticketTotalAmount() + otherIncomeTotal(); }
+function expenseTotal(){ return DATA.budget.expense.reduce(function(s,r){ return s+(Number(r.amount)||0); },0); }
+function balanceAmount(){ return incomeTotal() - expenseTotal(); }
+
+function stats(){
+  var done=0, total=0;
+  (DATA.todoCategories||[]).forEach(function(c){ (c.items||[]).forEach(function(i){ total++; if(i.checked) done++; }); });
+  (DATA.equipment||[]).forEach(function(i){ total++; if(i.checked) done++; });
+  (DATA.priority8||[]).forEach(function(i){ total++; if(i.checked) done++; });
+  return {done:done, total:total};
+}
+
+var STAFF_LABELS = [
+  {code:"武", name:"武部拓磨さん"},
+  {code:"賀", name:"賀数さん"},
+  {code:"横", name:"横手さん"},
+  {code:"智", name:"糸数智"},
+  {code:"和", name:"糸数和代"},
+  {code:"コ", name:"武部ココさん"},
+  {code:"A", name:"スタッフA"},
+  {code:"B", name:"スタッフB"},
+  {code:"C", name:"スタッフC"}
+];
+var currentLabel = "武";
+
+/* ============================================================
+   VIEW MODE
+   ============================================================ */
+function floorplanSvg(){
+  return '<svg class="floorplan-svg" viewBox="0 0 600 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="小ホール配置図">' +
+    '<rect class="fp-stage" x="90" y="20" width="420" height="130" rx="4"/>' +
+    '<text class="fp-label" x="300" y="92" text-anchor="middle">舞台</text>' +
+    '<rect class="fp-seat" x="60" y="180" width="480" height="380" rx="4"/>' +
+    '<line class="fp-row" x1="60" y1="243" x2="540" y2="243"/>' +
+    '<line class="fp-row" x1="60" y1="306" x2="540" y2="306"/>' +
+    '<line class="fp-row" x1="60" y1="369" x2="540" y2="369"/>' +
+    '<line class="fp-row" x1="60" y1="432" x2="540" y2="432"/>' +
+    '<line class="fp-row" x1="60" y1="495" x2="540" y2="495"/>' +
+    '<line class="fp-aisle" x1="230" y1="180" x2="230" y2="560"/>' +
+    '<line class="fp-aisle" x1="370" y1="180" x2="370" y2="560"/>' +
+    '<text class="fp-label" x="300" y="577" text-anchor="middle">客席</text>' +
+    '<rect class="fp-lobby" x="60" y="610" width="480" height="110" rx="4"/>' +
+    '<text class="fp-label" x="300" y="640" text-anchor="middle">ロビー</text>' +
+    '<rect class="fp-desk" x="250" y="655" width="100" height="34" rx="4"/>' +
+    '<text class="fp-label-sm" x="300" y="677" text-anchor="middle">受付</text>' +
+    '<rect class="fp-door" x="70" y="700" width="70" height="16"/>' +
+    '<text class="fp-label-sm" x="105" y="712" text-anchor="middle">入口</text>' +
+    '<rect class="fp-door" x="460" y="700" width="70" height="16"/>' +
+    '<text class="fp-label-sm" x="495" y="712" text-anchor="middle">入口</text>' +
+  '</svg>';
+}
+function legendHtml(){
+  return '<div class="legend">' + STAFF_LABELS.map(function(l){
+    return '<div class="legend-item"><span class="legend-badge">'+esc(l.code)+'</span>'+esc(l.name)+'</div>';
+  }).join('') + '</div>';
+}
+function markersHtml(markers, editable){
+  return (markers||[]).map(function(m, mi){
+    return '<div class="marker'+(editable?' editable':'')+'" style="left:'+m.x+'%;top:'+m.y+'%;" data-marker-idx="'+mi+'" title="'+esc(m.label)+'">'+esc(m.label)+'</div>';
+  }).join('');
+}
+function labelPaletteHtml(){
+  return '<div class="label-palette">' + STAFF_LABELS.map(function(l){
+    return '<button type="button" class="label-btn'+(l.code===currentLabel?' active':'')+'" data-action="pick-label" data-label="'+esc(l.code)+'" title="'+esc(l.name)+'">'+esc(l.code)+'</button>';
+  }).join('') + '</div>';
+}
+
+function budgetViewHtml(){
+  var d = DATA, cap = Number(d.overview.capacityNumber)||0;
+  var left = cap - ticketTotalCount();
+  var seatsClass = left<=0 ? "seats-pill full" : "seats-pill";
+  var seatsText = left<=0 ? "満席" : ("残席 " + left + " / " + cap + " 名");
+  var bal = balanceAmount();
+  var html = "";
+  html += '<div class="label">申込状況（層別集計）</div>';
+  html += '<div class="table-wrap"><table><thead><tr><th>区分</th><th>単価</th><th>申込人数</th><th>金額</th></tr></thead><tbody>';
+  html += d.budget.tickets.map(function(t){
+    return '<tr><td>'+esc(t.tier)+'</td><td class="num">'+yen(t.unitPrice)+'</td><td class="num">'+(Number(t.count)||0)+' 名</td><td class="num">'+yen(ticketSubtotal(t))+'</td></tr>';
+  }).join('');
+  html += '<tr class="total"><td colspan="2">合計</td><td class="num" id="calc-ticket-count-total">'+ticketTotalCount()+' 名</td><td class="num" id="calc-ticket-amount-total">'+yen(ticketTotalAmount())+'</td></tr>';
+  html += '</tbody></table></div>';
+  html += '<span class="'+seatsClass+'" id="calc-seats-left">'+seatsText+'</span>';
+
+  html += '<div class="label">その他収入（協賛・物販など）</div>';
+  html += '<div class="table-wrap"><table><thead><tr><th>項目</th><th>金額</th></tr></thead><tbody>';
+  html += d.budget.otherIncome.map(function(r){ return '<tr><td>'+esc(r.item)+'</td><td class="num">'+yen(r.amount)+'</td></tr>'; }).join('');
+  html += '<tr class="total"><td>小計</td><td class="num" id="calc-income-other-total">'+yen(otherIncomeTotal())+'</td></tr>';
+  html += '</tbody></table></div>';
+
+  html += '<div class="subtotal-line"><span>収入合計（チケット + その他）</span><span class="num" id="calc-income-total">'+yen(incomeTotal())+'</span></div>';
+
+  html += '<div class="label">支出</div>';
+  html += '<div class="table-wrap"><table><thead><tr><th>項目</th><th>金額</th></tr></thead><tbody>';
+  html += d.budget.expense.map(function(r){ return '<tr><td>'+esc(r.item)+'</td><td class="num">'+yen(r.amount)+'</td></tr>'; }).join('');
+  html += '<tr class="total"><td>支出合計</td><td class="num" id="calc-expense-total">'+yen(expenseTotal())+'</td></tr>';
+  html += '</tbody></table></div>';
+
+  html += '<div class="balance-box'+(bal<0?' neg':'')+'" id="balance-box"><span class="blabel">収支差額（収入 − 支出）</span><span class="bamount num" id="calc-balance">'+yen(bal)+'</span></div>';
+  html += '<div class="concept-box">'+esc(d.budget.note)+'</div>';
+  return html;
+}
+
+function renderView(){
+  var d = DATA, html = "";
+
+  html += '<section class="card" id="sec-overview">' +
+    '<h2><span class="no">01</span>' + esc(d.overview.name) + '</h2>' +
+    '<div class="desc">' + esc(d.overview.title) + '　' + esc(d.overview.subtitle) + '</div>' +
+    '<dl class="kv">' +
+      '<dt>日時</dt><dd>' + esc(d.overview.datetime) + '</dd>' +
+      '<dt>会場</dt><dd>' + esc(d.overview.venue) + '</dd>' +
+      '<dt>会場情報</dt><dd><a href="' + esc(d.overview.venueUrl) + '" target="_blank" rel="noopener">てだこホール公式サイト（小ホール）</a></dd>' +
+      '<dt>参加費</dt><dd><ul>' + d.overview.feeLines.map(function(l){return '<li>'+esc(l)+'</li>';}).join('') + '</ul></dd>' +
+      '<dt>定員</dt><dd>' + esc(d.overview.capacity) + '</dd>' +
+      '<dt>申込締切</dt><dd>' + esc(d.overview.deadline) + '</dd>' +
+      '<dt>申込方法</dt><dd>' + esc(d.overview.apply) + '</dd>' +
+      '<dt>問い合わせ</dt><dd>' + esc(d.overview.contact) + '</dd>' +
+      '<dt>主催</dt><dd>' + esc(d.overview.organizer) + '</dd>' +
+    '</dl>' +
+    '<div class="concept-box">' + esc(d.overview.concept) + '</div>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-speakers"><h2><span class="no">02</span>登壇者プロフィール</h2>' +
+    d.speakers.map(function(s){
+      return '<div class="speaker-card"><div class="name">'+esc(s.name)+'</div><div class="title">'+esc(s.title)+'</div><div class="bio">'+esc(s.bio)+'</div></div>';
+    }).join('') +
+  '</section>';
+
+  html += '<section class="card" id="sec-schedule"><h2><span class="no">03</span>当日タイムスケジュール</h2>' +
+    '<div class="table-wrap"><table><thead><tr><th>時刻</th><th>内容</th></tr></thead><tbody>' +
+      d.schedule.map(function(r){ return '<tr><td class="time num">'+esc(r.time)+'</td><td>'+esc(r.content)+'</td></tr>'; }).join('') +
+    '</tbody></table></div>' +
+    '<div class="label">当日受付・体制メモ</div>' +
+    '<ul class="plain">' + d.dayOps.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('') + '</ul>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-budget"><h2><span class="no">04</span>収支</h2>' + budgetViewHtml() + '</section>';
+
+  html += '<section class="card" id="sec-staff"><h2><span class="no">05</span>運営スタッフ</h2>' +
+    '<div class="desc">LINEグループメンバー（全'+d.staff.length+'名）。役割が判明しているメンバーのみ備考欄に記載。</div>' +
+    '<div class="table-wrap"><table><thead><tr><th>名前</th><th>役割・備考</th></tr></thead><tbody>' +
+      d.staff.map(function(r){ return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.role)+'</td></tr>'; }).join('') +
+    '</tbody></table></div>' +
+    '<div class="label">当日役割（人数のみ確定・個人名は要割当）</div>' +
+    '<div class="pillrow">' + d.dayRoles.map(function(r){ return '<span class="pill">'+esc(r.role)+'　'+esc(r.count)+'</span>'; }).join('') + '</div>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-prep"><h2><span class="no">06</span>当日までの準備スケジュール</h2>' +
+    '<div class="table-wrap"><table><thead><tr><th>月</th><th>予定内容</th><th>状況</th></tr></thead><tbody>' +
+      d.prepSchedule.map(function(r){ return '<tr><td class="num" style="font-weight:700;">'+esc(r.month)+'</td><td>'+esc(r.plan)+'</td><td>'+esc(r.status)+'</td></tr>'; }).join('') +
+    '</tbody></table></div>' +
+    '<div class="label">企画立案当初の優先8項目</div>' +
+    '<div class="checklist">' +
+      d.priority8.map(function(p,i){
+        return '<div class="check-row'+(p.checked?' done':'')+'"><span class="box">'+(p.checked?'✓':'')+'</span><span class="txt">'+(i+1)+'. '+esc(p.text)+'</span></div>';
+      }).join('') +
+    '</div>' +
+  '</section>';
+
+  var todoHtml = d.todoCategories.map(function(cat){
+    var done = cat.items.filter(function(i){return i.checked;}).length, total = cat.items.length;
+    return '<div class="cat-block"><div class="cat-head"><h3>'+esc(cat.category)+'</h3>' +
+      '<span class="cat-count'+(total>0&&done===total?' full':'')+'">'+done+' / '+total+'</span></div>' +
+      '<div class="checklist">' +
+        cat.items.map(function(it){
+          return '<div class="check-row'+(it.checked?' done':'')+'"><span class="box">'+(it.checked?'✓':'')+'</span><span class="txt">'+esc(it.text)+'</span></div>';
+        }).join('') +
+      '</div></div>';
+  }).join('');
+  html += '<section class="card" id="sec-todo"><h2><span class="no">07</span>項目別やることリスト</h2>' + todoHtml + '</section>';
+
+  var eqDone = d.equipment.filter(function(i){return i.checked;}).length;
+  html += '<section class="card" id="sec-equipment"><h2><span class="no">08</span>必要備品チェックリスト</h2>' +
+    '<div class="desc">'+eqDone+' / '+d.equipment.length+' 確保済み</div>' +
+    '<div class="checklist">' +
+      d.equipment.map(function(it){
+        return '<div class="check-row'+(it.checked?' done':'')+'"><span class="box">'+(it.checked?'✓':'')+'</span><span class="txt">'+esc(it.text)+'</span></div>';
+      }).join('') +
+    '</div>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-formations"><h2><span class="no">09</span>会場・スタッフ配置</h2>' +
+    '<div class="desc">場面ごとのスタッフ配置プラン（<a href="'+esc(d.overview.venueUrl)+'" target="_blank" rel="noopener">会場情報はこちら</a>）</div>' +
+    legendHtml() +
+    d.formations.map(function(f){
+      return '<div class="formation-block"><h3>'+esc(f.title)+'</h3>' +
+        '<div class="floorplan-wrap readonly">' + floorplanSvg() + markersHtml(f.markers, false) + '</div></div>';
+    }).join('') +
+  '</section>';
+
+  html += '<footer class="foot">最終更新: '+esc(d.updated)+' ／ グスクラボ運営ハンドブック（スタッフ限定）</footer>';
+  document.getElementById("content").innerHTML = html;
+}
+
+/* ============================================================
+   EDIT MODE
+   ============================================================ */
+function fieldText(label, path, val, isArea){
+  var open = isArea ? ('<textarea data-path="'+path+'">'+esc(val)+'</textarea>') :
+    ('<input type="text" data-path="'+path+'" value="'+esc(val)+'" />');
+  return '<div class="field"><label>'+label+'</label>'+open+'</div>';
+}
+function fieldNumber(label, path, val){
+  return '<div class="field"><label>'+label+'</label><input type="number" data-path="'+path+'" value="'+esc(val)+'" /></div>';
+}
+function lineRows(basePath, arr, kind, btnLabel){
+  return '<div class="list-lines">' +
+    arr.map(function(v, i){
+      return '<div class="line-row"><input type="text" data-path="'+basePath+'.'+i+'" value="'+esc(v)+'" />' +
+        '<button type="button" class="row-x" data-action="remove" data-path="'+basePath+'.'+i+'">✕</button></div>';
+    }).join('') +
+    '<button type="button" class="add-btn" data-action="add" data-kind="'+kind+'" data-path="'+basePath+'">＋ '+(btnLabel||'行を追加')+'</button>' +
+  '</div>';
+}
+function objectRows(basePath, arr, cols, kind, btnLabel){
+  return arr.map(function(row, i){
+    var inner = cols.map(function(c){ return fieldText(c.label, basePath+'.'+i+'.'+c.key, row[c.key], !!c.area); }).join('');
+    return '<div class="edit-table-row" style="grid-template-columns:1fr auto;">' +
+      '<div class="grid2">'+inner+'</div>' +
+      '<button type="button" class="row-x" data-action="remove" data-path="'+basePath+'.'+i+'">✕</button>' +
+    '</div>';
+  }).join('') +
+  '<button type="button" class="add-btn" data-action="add" data-kind="'+kind+'" data-path="'+basePath+'">＋ '+(btnLabel||'行を追加')+'</button>';
+}
+function checklistRows(basePath, arr, kind, btnLabel){
+  return arr.map(function(it, i){
+    return '<div class="chk-row">' +
+      '<input type="checkbox" data-path="'+basePath+'.'+i+'.checked" '+(it.checked?'checked':'')+' />' +
+      '<input type="text" data-path="'+basePath+'.'+i+'.text" value="'+esc(it.text)+'" />' +
+      '<button type="button" class="row-x" data-action="remove" data-path="'+basePath+'.'+i+'">✕</button>' +
+    '</div>';
+  }).join('') +
+  '<button type="button" class="add-btn" data-action="add" data-kind="'+kind+'" data-path="'+basePath+'">＋ '+(btnLabel||'項目を追加')+'</button>';
+}
+function ticketsEditRows(){
+  var d = DATA;
+  return d.budget.tickets.map(function(t,i){
+    return '<div class="ticket-row">' +
+      '<div class="field tw-tier"><label>区分</label><input type="text" data-path="budget.tickets.'+i+'.tier" value="'+esc(t.tier)+'" /></div>' +
+      '<div class="field tw-num"><label>単価</label><input type="number" data-path="budget.tickets.'+i+'.unitPrice" value="'+esc(t.unitPrice)+'" /></div>' +
+      '<div class="field tw-num"><label>申込人数</label><input type="number" data-path="budget.tickets.'+i+'.count" value="'+esc(t.count)+'" /></div>' +
+      '<div class="field"><label>金額</label><div class="computed" id="ticket-subtotal-'+i+'">'+yen(ticketSubtotal(t))+'</div></div>' +
+      '<button type="button" class="row-x" data-action="remove" data-path="budget.tickets.'+i+'">✕</button>' +
+    '</div>';
+  }).join('') + '<button type="button" class="add-btn" data-action="add" data-kind="ticket" data-path="budget.tickets">＋ 区分を追加</button>';
+}
+function moneyRows(basePath, arr, kind, btnLabel){
+  return arr.map(function(r,i){
+    return '<div class="money-row">' +
+      '<div class="field mw-item"><label>項目</label><input type="text" data-path="'+basePath+'.'+i+'.item" value="'+esc(r.item)+'" /></div>' +
+      '<div class="field mw-amt"><label>金額</label><input type="number" data-path="'+basePath+'.'+i+'.amount" value="'+esc(r.amount)+'" /></div>' +
+      '<button type="button" class="row-x" data-action="remove" data-path="'+basePath+'.'+i+'">✕</button>' +
+    '</div>';
+  }).join('') + '<button type="button" class="add-btn" data-action="add" data-kind="'+kind+'" data-path="'+basePath+'">＋ '+(btnLabel||'行を追加')+'</button>';
+}
+
+function renderEdit(){
+  var d = DATA;
+
+  var html = '<section class="card" id="sec-overview"><h2><span class="no">01</span>イベント概要</h2>' +
+    fieldText("企画名","overview.name", d.overview.name) +
+    fieldText("タイトル","overview.title", d.overview.title) +
+    fieldText("サブタイトル","overview.subtitle", d.overview.subtitle) +
+    '<div class="grid2">' + fieldText("日時","overview.datetime", d.overview.datetime) + fieldText("会場","overview.venue", d.overview.venue) + '</div>' +
+    fieldText("会場情報URL","overview.venueUrl", d.overview.venueUrl) +
+    '<div class="label">参加費（1行ずつ）</div>' + lineRows("overview.feeLines", d.overview.feeLines, "dayop") +
+    '<div class="grid2" style="margin-top:12px;">' +
+      fieldText("定員（説明文）","overview.capacity", d.overview.capacity) +
+      fieldNumber("定員（人数・残席計算用）","overview.capacityNumber", d.overview.capacityNumber) +
+    '</div>' +
+    fieldText("申込締切","overview.deadline", d.overview.deadline) +
+    fieldText("申込方法","overview.apply", d.overview.apply) +
+    '<div class="grid2">' + fieldText("問い合わせ","overview.contact", d.overview.contact) + fieldText("主催","overview.organizer", d.overview.organizer) + '</div>' +
+    fieldText("企画趣旨","overview.concept", d.overview.concept, true) +
+    fieldText("最終更新日","updated", d.updated) +
+  '</section>';
+
+  html += '<section class="card" id="sec-speakers"><h2><span class="no">02</span>登壇者プロフィール</h2>' +
+    d.speakers.map(function(s,i){
+      return '<div class="edit-table-row" style="grid-template-columns:1fr auto;"><div>' +
+        '<div class="grid2">' + fieldText("氏名","speakers."+i+".name", s.name) + fieldText("肩書","speakers."+i+".title", s.title) + '</div>' +
+        fieldText("概要","speakers."+i+".bio", s.bio, true) +
+      '</div><button type="button" class="row-x" data-action="remove" data-path="speakers.'+i+'">✕</button></div>';
+    }).join('') +
+    '<button type="button" class="add-btn" data-action="add" data-kind="speaker" data-path="speakers">＋ 登壇者を追加</button>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-schedule"><h2><span class="no">03</span>当日タイムスケジュール</h2>' +
+    objectRows("schedule", d.schedule, [{key:"time",label:"時刻"},{key:"content",label:"内容"}], "schedule") +
+    '<div class="label">当日受付・体制メモ（1行ずつ）</div>' + lineRows("dayOps", d.dayOps, "dayop") +
+  '</section>';
+
+  html += '<section class="card" id="sec-budget"><h2><span class="no">04</span>収支</h2>' +
+    '<div class="desc">申込人数を入力すると金額・残席・収支差額が自動計算されます。</div>' +
+    '<div class="label">申込状況（層別集計）</div>' +
+    ticketsEditRows() +
+    '<div class="subtotal-line"><span>合計</span><span class="num"><span id="calc-ticket-count-total">'+ticketTotalCount()+' 名</span>　<span id="calc-ticket-amount-total">'+yen(ticketTotalAmount())+'</span></span></div>' +
+    (function(){ var cap=Number(d.overview.capacityNumber)||0, left=cap-ticketTotalCount(); var cls=left<=0?"seats-pill full":"seats-pill"; var txt=left<=0?"満席":("残席 "+left+" / "+cap+" 名"); return '<span class="'+cls+'" id="calc-seats-left">'+txt+'</span>'; })() +
+    '<div class="label">その他収入（協賛・物販など）</div>' +
+    moneyRows("budget.otherIncome", d.budget.otherIncome, "otherincome") +
+    '<div class="subtotal-line"><span>その他収入 小計</span><span class="num" id="calc-income-other-total">'+yen(otherIncomeTotal())+'</span></div>' +
+    '<div class="subtotal-line"><span>収入合計（チケット + その他）</span><span class="num" id="calc-income-total">'+yen(incomeTotal())+'</span></div>' +
+    '<div class="label">支出</div>' +
+    moneyRows("budget.expense", d.budget.expense, "expense") +
+    '<div class="subtotal-line"><span>支出合計</span><span class="num" id="calc-expense-total">'+yen(expenseTotal())+'</span></div>' +
+    (function(){ var b=balanceAmount(); return '<div class="balance-box'+(b<0?' neg':'')+'" id="balance-box"><span class="blabel">収支差額（収入 − 支出）</span><span class="bamount num" id="calc-balance">'+yen(b)+'</span></div>'; })() +
+    fieldText("メモ","budget.note", d.budget.note, true) +
+  '</section>';
+
+  html += '<section class="card" id="sec-staff"><h2><span class="no">05</span>運営スタッフ</h2>' +
+    '<div class="label">メンバー一覧</div>' + objectRows("staff", d.staff, [{key:"name",label:"名前"},{key:"role",label:"役割・備考"}], "staff") +
+    '<div class="label">当日役割</div>' + objectRows("dayRoles", d.dayRoles, [{key:"role",label:"役割"},{key:"count",label:"人数・担当"}], "dayrole") +
+  '</section>';
+
+  html += '<section class="card" id="sec-prep"><h2><span class="no">06</span>当日までの準備スケジュール</h2>' +
+    objectRows("prepSchedule", d.prepSchedule, [{key:"month",label:"月"},{key:"plan",label:"予定内容",area:true},{key:"status",label:"状況"}], "prep") +
+    '<div class="label">企画立案当初の優先8項目</div>' + checklistRows("priority8", d.priority8, "priority") +
+  '</section>';
+
+  html += '<section class="card" id="sec-todo"><h2><span class="no">07</span>項目別やることリスト</h2>' +
+    d.todoCategories.map(function(cat, ci){
+      return '<div class="cat-block"><div class="cat-name-row">' +
+        '<input type="text" data-path="todoCategories.'+ci+'.category" value="'+esc(cat.category)+'" />' +
+        '<button type="button" class="row-x" data-action="remove" data-path="todoCategories.'+ci+'">✕</button></div>' +
+        checklistRows("todoCategories."+ci+".items", cat.items, "item") +
+      '</div>';
+    }).join('') +
+    '<button type="button" class="add-btn" data-action="add" data-kind="category" data-path="todoCategories" style="margin-top:14px;">＋ カテゴリを追加</button>' +
+  '</section>';
+
+  html += '<section class="card" id="sec-equipment"><h2><span class="no">08</span>必要備品チェックリスト</h2>' +
+    checklistRows("equipment", d.equipment, "equipment") +
+  '</section>';
+
+  html += '<section class="card" id="sec-formations"><h2><span class="no">09</span>会場・スタッフ配置</h2>' +
+    '<div class="hint">配置図をクリックしてマーカーを配置します。マーカーをクリックすると削除できます。</div>' +
+    legendHtml() +
+    '<div class="label-palette-row"><div class="field"><label>配置する人物を選択</label></div>' + labelPaletteHtml() + '</div>' +
+    d.formations.map(function(f, fi){
+      return '<div class="formation-block">' +
+        '<div class="formation-title-row"><input type="text" data-path="formations.'+fi+'.title" value="'+esc(f.title)+'" />' +
+          '<button type="button" class="row-x" data-action="remove" data-path="formations.'+fi+'">✕</button></div>' +
+        '<div class="floorplan-wrap" data-formation="'+fi+'">' + floorplanSvg() + markersHtml(f.markers, true) + '</div>' +
+      '</div>';
+    }).join('') +
+    '<button type="button" class="add-btn" data-action="add" data-kind="formation" data-path="formations" style="margin-top:14px;">＋ 場面を追加</button>' +
+  '</section>';
+
+  document.getElementById("content").innerHTML = html;
+}
+
+function updateComputedFields(){
+  DATA.budget.tickets.forEach(function(t,i){
+    var el = document.getElementById("ticket-subtotal-"+i);
+    if (el) el.textContent = yen(ticketSubtotal(t));
+  });
+  var tc = document.getElementById("calc-ticket-count-total"); if (tc) tc.textContent = ticketTotalCount()+" 名";
+  var ta = document.getElementById("calc-ticket-amount-total"); if (ta) ta.textContent = yen(ticketTotalAmount());
+  var oi = document.getElementById("calc-income-other-total"); if (oi) oi.textContent = yen(otherIncomeTotal());
+  var it = document.getElementById("calc-income-total"); if (it) it.textContent = yen(incomeTotal());
+  var et = document.getElementById("calc-expense-total"); if (et) et.textContent = yen(expenseTotal());
+  var bal = balanceAmount();
+  var balEl = document.getElementById("calc-balance");
+  if (balEl){ balEl.textContent = yen(bal); }
+  var box = document.getElementById("balance-box");
+  if (box){ box.classList.toggle("neg", bal < 0); }
+  var seatsEl = document.getElementById("calc-seats-left");
+  if (seatsEl){
+    var cap = Number(DATA.overview.capacityNumber)||0, left = cap - ticketTotalCount();
+    seatsEl.textContent = left<=0 ? "満席" : ("残席 "+left+" / "+cap+" 名");
+    seatsEl.classList.toggle("full", left<=0);
+  }
+  updateSidebarProgress();
+}
+
+/* ---------- delegated edit events ---------- */
+function onContentInput(e){
+  var t = e.target;
+  if (!t.dataset || !t.dataset.path) return;
+  if (t.type === "checkbox") return;
+  setPath(DATA, t.dataset.path, t.value);
+  updateComputedFields();
+}
+function onContentChange(e){
+  var t = e.target;
+  if (!t.dataset || !t.dataset.path) return;
+  if (t.type === "checkbox"){ setPath(DATA, t.dataset.path, t.checked); updateComputedFields(); }
+}
+function onContentClick(e){
+  var markerEl = e.target.closest(".marker");
+  if (markerEl && markerEl.classList.contains("editable")){
+    var wrapEl0 = markerEl.closest(".floorplan-wrap");
+    var fi0 = Number(wrapEl0.dataset.formation);
+    var mi0 = Number(markerEl.dataset.markerIdx);
+    DATA.formations[fi0].markers.splice(mi0, 1);
+    renderEdit();
+    return;
+  }
+  var wrapEl = e.target.closest(".floorplan-wrap");
+  if (wrapEl && !wrapEl.classList.contains("readonly")){
+    var fi = Number(wrapEl.dataset.formation);
+    var rect = wrapEl.getBoundingClientRect();
+    var x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    var y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    DATA.formations[fi].markers.push({label: currentLabel, x: Math.round(x*10)/10, y: Math.round(y*10)/10});
+    renderEdit();
+    return;
+  }
+  var t = e.target.closest("[data-action]");
+  if (!t) return;
+  var action = t.dataset.action;
+  if (action === "remove"){ removeAt(DATA, t.dataset.path); renderEdit(); updateComputedFields(); }
+  else if (action === "add"){ getPath(DATA, t.dataset.path).push(templateFor(t.dataset.kind)); renderEdit(); updateComputedFields(); }
+  else if (action === "pick-label"){ currentLabel = t.dataset.label; renderEdit(); }
+}
+document.getElementById("content").addEventListener("input", onContentInput);
+document.getElementById("content").addEventListener("change", onContentChange);
+document.getElementById("content").addEventListener("click", onContentClick);
+
+/* ---------- mode + toolbar ---------- */
+function setStatus(text, kind){
+  var el = document.getElementById("statusPill");
+  el.textContent = text;
+  el.className = "status-pill" + (kind ? " " + kind : "");
+}
+function updateSidebarProgress(){
+  var s = stats();
+  var el = document.getElementById("progressText");
+  if (el) el.textContent = s.done + " / " + s.total;
+}
+function refreshUI(){
+  document.getElementById("modeSwitchBox").hidden = !isEditor;
+  document.getElementById("btnLogin").hidden = isEditor;
+  document.getElementById("btnLogout").hidden = !isEditor;
+  if (!isEditor) mode = "view";
+  document.getElementById("btnView").classList.toggle("active", mode === "view");
+  document.getElementById("btnEdit").classList.toggle("active", mode === "edit");
+  document.getElementById("btnSave").hidden = !(isEditor && mode === "edit");
+  if (!DATA) return;
+  document.getElementById("brandSub").textContent = DATA.overview.title;
+  if (mode === "edit") renderEdit(); else renderView();
+  updateSidebarProgress();
+  if (!saving) setStatus(isEditor ? (mode === "edit" ? "編集モード — 保存すると全員に共有されます" : "閲覧モード（編集者としてログイン中）") : "閲覧モード");
+}
+function setMode(next){ mode = next; refreshUI(); }
+
+document.getElementById("btnView").addEventListener("click", function(){ setMode("view"); });
+document.getElementById("btnEdit").addEventListener("click", function(){ setMode("edit"); });
+
+/* ---------- save ---------- */
+function handleSave(){
+  if (!isEditor || !DATA) return;
+  var btn = document.getElementById("btnSave");
+  btn.disabled = true;
+  saving = true;
+  setStatus("保存中…");
+  setDoc(DOC_REF, DATA)
+    .then(function(){
+      setStatus("保存しました", "ok");
+      saving = false;
+      btn.disabled = false;
+      setTimeout(function(){ if (!saving) refreshUI(); }, 1500);
+    })
+    .catch(function(err){
+      console.error(err);
+      setStatus("保存に失敗しました。通信状況を確認して再試行してください。", "warn");
+      saving = false;
+      btn.disabled = false;
+    });
+}
+document.getElementById("btnSave").addEventListener("click", handleSave);
+
+/* ---------- Firestore live sync ---------- */
+onSnapshot(DOC_REF, function(snap){
+  if (snap.exists()){
+    DATA = snap.data();
+  } else if (!DATA){
+    DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+  refreshUI();
+}, function(err){
+  console.error(err);
+  if (!DATA) DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  setStatus("データの取得に失敗しました（表示は初期データです）", "warn");
+  refreshUI();
+});
+
+/* ---------- auth / login modal ---------- */
+function showLogin(){
+  document.getElementById("pw").value = "";
+  document.getElementById("pwErr").textContent = "";
+  document.getElementById("loginModal").hidden = false;
+  document.getElementById("pw").focus();
+}
+function hideLogin(){ document.getElementById("loginModal").hidden = true; }
+
+function tryLogin(){
+  var pwVal = document.getElementById("pw").value;
+  var btn = document.getElementById("pwBtn");
+  btn.disabled = true;
+  signInWithEmailAndPassword(auth, EDITOR_EMAIL, pwVal)
+    .then(function(){ hideLogin(); btn.disabled = false; })
+    .catch(function(err){
+      document.getElementById("pwErr").textContent = "パスワードが違います。もう一度お試しください。";
+      btn.disabled = false;
+    });
+}
+document.getElementById("btnLogin").addEventListener("click", showLogin);
+document.getElementById("pwCancel").addEventListener("click", hideLogin);
+document.getElementById("pwBtn").addEventListener("click", tryLogin);
+document.getElementById("pw").addEventListener("keydown", function(e){ if (e.key === "Enter") tryLogin(); });
+document.getElementById("btnLogout").addEventListener("click", function(){ signOut(auth); });
+
+onAuthStateChanged(auth, function(user){
+  isEditor = !!user;
+  refreshUI();
+});
+</script>
+</body>
+</html>
