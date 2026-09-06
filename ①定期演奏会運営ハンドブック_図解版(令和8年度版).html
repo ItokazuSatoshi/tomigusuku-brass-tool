@@ -1,0 +1,1451 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>定期演奏会運営ハンドブック 図解版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+  /* 2025年度説明会スライド（白背景＋紺の太字見出し＋黒枠ボックス＋黄色/赤の強調）を
+     踏襲した、白地基調の単一デザイン。端末のダークモード設定に関わらず同じ見た目。 */
+  :root {
+    --paper: #ffffff;
+    --paper-raised: #ffffff;
+    --ink: #202124;
+    --ink-soft: #5a5f6a;
+    --navy: #173d78;
+    --navy-deep: #0f2a54;
+    --gold: #b8860b;
+    --gold-soft: #fff2b8;
+    --alert: #c00000;
+    --alert-soft: #fbe1df;
+    --line: #17325c;
+    --line-soft: rgba(23, 61, 120, 0.18);
+    --shadow: rgba(23, 42, 74, 0.08);
+    --chip-bg: #ffffff;
+    --chip-text: var(--navy);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; width: 100%; overflow-x: hidden; }
+
+  body {
+    margin: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .disp {
+    font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    color: var(--navy);
+    text-wrap: balance;
+    letter-spacing: 0.01em;
+  }
+
+  a { color: var(--gold); }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .ico { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.15em; }
+
+  /* ---------- header ---------- */
+  .hero {
+    background:
+      var(--paper);
+    color: var(--navy);
+    padding: calc(1.6rem + env(safe-area-inset-top)) max(1.1rem, env(safe-area-inset-right)) 1.4rem max(1.1rem, env(safe-area-inset-left));
+    text-align: center;
+    position: relative;
+  }
+  .hero .titlebox {
+    max-width: 640px; margin: 0 auto;
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    padding: 1.6rem 1.3rem 1.3rem;
+    background: #fff;
+  }
+  .hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 700; font-size: 0.78rem; letter-spacing: 0.12em;
+    color: var(--navy); background: var(--gold-soft);
+    border: 1px solid var(--navy);
+    padding: 0.35em 0.9em; border-radius: 999px;
+  }
+  .hero .ico { width: 1.15em; height: 1.15em; }
+  .hero h1 {
+    color: var(--navy);
+    font-size: clamp(1.5rem, 5.6vw, 2.2rem);
+    margin: 0.7em 0 0.3em;
+    font-weight: 900;
+  }
+  .hero p.sub {
+    margin: 0 auto; max-width: 34em;
+    color: var(--ink-soft); font-weight: 500; font-size: 0.98rem;
+  }
+  .hero .meta {
+    margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--line-soft);
+    font-size: 0.82rem; color: var(--ink-soft);
+  }
+
+  /* ---------- quick nav ---------- */
+  .quicknav-wrap {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--paper); border-bottom: 1px solid var(--line-soft);
+    box-shadow: 0 6px 14px -12px var(--shadow);
+  }
+  .quicknav {
+    display: flex; gap: 0.5rem; overflow-x: auto;
+    padding: 0.6rem max(0.9rem, env(safe-area-inset-right)) 0.6rem max(0.9rem, env(safe-area-inset-left));
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .quicknav::-webkit-scrollbar { height: 5px; }
+  .quicknav::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 4px; }
+  .quicknav a {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 0.35em;
+    background: var(--chip-bg); color: var(--chip-text);
+    border: 1.5px solid var(--navy);
+    padding: 0.42em 0.9em; border-radius: 999px;
+    font-size: 0.83rem; font-weight: 700; text-decoration: none;
+    font-family: "Zen Maru Gothic", sans-serif;
+    white-space: nowrap;
+  }
+  .quicknav a .ico { width: 1.05em; height: 1.05em; }
+
+  /* ---------- layout ---------- */
+  main {
+    max-width: 640px; margin: 0 auto; width: 100%;
+    padding: 0 max(1.1rem, env(safe-area-inset-right)) calc(4rem + env(safe-area-inset-bottom)) max(1.1rem, env(safe-area-inset-left));
+  }
+  .lede {
+    padding: 1.4rem 0 0.4rem; color: var(--ink-soft); font-size: 0.94rem;
+  }
+  .lede .refs { margin: 0.6rem 0 0; padding-left: 1.1rem; }
+  .lede .refs li { margin: 0.15rem 0; }
+
+  section.chapter { margin-top: 2.6rem; scroll-margin-top: 4.2rem; }
+  .chapter-head {
+    display: flex; align-items: center; gap: 0.65rem;
+    margin-bottom: 0.9rem;
+  }
+  .chapter-num {
+    flex: 0 0 auto;
+    width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    background: var(--navy); color: #fdf6e3;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; font-size: 1.05rem;
+    box-shadow: 0 4px 10px -4px var(--shadow);
+  }
+  .chapter-head h2 { margin: 0; font-size: 1.28rem; font-weight: 900; }
+  .chapter-head .ico { color: var(--gold); width: 1.2em; height: 1.2em; margin-right: 0.1em; }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 1.1rem 1.15rem;
+    margin-bottom: 0.9rem;
+    box-shadow: 0 3px 0 0 var(--shadow);
+  }
+  .card h3 {
+    margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.45em;
+  }
+  .card h3 .ico { color: var(--gold); flex: 0 0 auto; }
+  .card p { margin: 0.4rem 0; }
+  .card ul, .card ol { margin: 0.4rem 0; padding-left: 1.25rem; }
+  .card li { margin: 0.28rem 0; }
+  .card li::marker { color: var(--gold); }
+
+  mark {
+    background: var(--gold-soft); color: inherit;
+    padding: 0.05em 0.3em; border-radius: 4px; box-decoration-break: clone;
+  }
+  strong { color: var(--navy); }
+
+  .callout {
+    display: flex; gap: 0.6rem; align-items: flex-start;
+    background: var(--gold-soft); border-radius: 12px;
+    padding: 0.75rem 0.9rem; margin: 0.7rem 0 0.2rem;
+    font-size: 0.93rem;
+  }
+  .callout .ico { color: var(--gold); flex: 0 0 auto; margin-top: 0.15em; width: 1.3em; height: 1.3em; }
+  .callout.warn { background: var(--alert-soft); }
+  .callout.warn .ico { color: var(--alert); }
+  .callout p { margin: 0; }
+
+  .subhead {
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 700;
+    color: var(--navy); font-size: 0.95rem;
+    margin: 0.9rem 0 0.35rem; display: flex; align-items: center; gap: 0.4em;
+  }
+  .subhead .ico { color: var(--gold); width: 1.05em; height: 1.05em; }
+
+  /* role grid */
+  .role-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 0.6rem;
+  }
+  .role-card {
+    background: var(--paper); border: 1px solid var(--line-soft); border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+  }
+  .role-card .name { font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; color: var(--navy); font-size: 1rem; }
+  .role-card .count { color: var(--gold); font-weight: 700; font-size: 0.82rem; }
+  .role-card p { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+  /* stakeholder cards */
+  .stake-grid { display: grid; gap: 0.7rem; }
+  .stake { border-left: 4px solid var(--gold); padding-left: 0.8rem; }
+  .stake .name {
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; color: var(--navy);
+    display: flex; align-items: center; gap: 0.4em; margin-bottom: 0.25rem;
+  }
+  .stake.office { border-left-color: var(--navy); }
+
+  /* timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; }
+  .timeline li {
+    position: relative; padding: 0.15rem 0 0.9rem 1.5rem; border-left: 2px solid var(--line-soft);
+    margin-left: 0.6rem;
+  }
+  .timeline li:last-child { border-color: transparent; padding-bottom: 0; }
+  .timeline li::before {
+    content: ""; position: absolute; left: -6.5px; top: 0.3rem;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--gold); border: 2px solid var(--paper-raised);
+  }
+  .timeline .when { font-weight: 700; color: var(--navy); font-family: "Zen Maru Gothic", sans-serif; font-size: 0.92rem; }
+  .timeline .what { color: var(--ink); font-size: 0.94rem; }
+
+  /* phases (details) */
+  details.phase {
+    background: var(--paper-raised); border: 1.5px solid var(--line); border-radius: 12px;
+    margin-bottom: 0.7rem; overflow: hidden;
+    box-shadow: 0 3px 0 0 var(--shadow);
+  }
+  details.phase[open] { border-color: var(--gold); }
+  details.phase summary {
+    list-style: none; cursor: pointer; padding: 0.85rem 1rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  details.phase summary::-webkit-details-marker { display: none; }
+  .phase-badge {
+    flex: 0 0 auto; width: 2.2rem; height: 2.2rem; border-radius: 10px;
+    background: var(--navy); color: #fdf6e3; display: flex; align-items: center; justify-content: center;
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; font-size: 1rem;
+  }
+  .phase-title { flex: 1 1 auto; }
+  .phase-title .t { font-family: "Zen Maru Gothic", sans-serif; font-weight: 700; color: var(--navy); font-size: 0.98rem; display: block; }
+  .phase-title .p { font-size: 0.8rem; color: var(--ink-soft); }
+  .chev { flex: 0 0 auto; width: 1.2em; height: 1.2em; color: var(--gold); transition: transform 0.2s ease; }
+  details.phase[open] .chev { transform: rotate(180deg); }
+  .phase-body { padding: 0 1.1rem 1.1rem; }
+  .phase-body .subhead:first-child { margin-top: 0.2rem; }
+  .phase-body ul { margin: 0.3rem 0 0.2rem; padding-left: 1.2rem; }
+  .phase-body li { margin: 0.28rem 0; font-size: 0.94rem; }
+  .phase-body li::marker { color: var(--gold); }
+
+  .toggle-all {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    background: none; border: 1.5px solid var(--navy); color: var(--navy);
+    font-family: "Zen Maru Gothic", sans-serif; font-weight: 700; font-size: 0.82rem;
+    padding: 0.4em 0.85em; border-radius: 999px; margin-bottom: 0.8rem; cursor: pointer;
+  }
+  .toggle-all:hover { border-color: var(--gold); }
+
+  table.data {
+    border-collapse: collapse; width: 100%; font-size: 0.88rem; min-width: 420px;
+    font-variant-numeric: tabular-nums;
+  }
+  table.data caption { text-align: left; font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  table.data th, table.data td {
+    border: 1px solid var(--line); padding: 0.5em 0.7em; text-align: right;
+  }
+  table.data th:first-child, table.data td:first-child { text-align: left; }
+  table.data thead th {
+    background: var(--navy); color: #fdf6e3; font-family: "Zen Maru Gothic", sans-serif; font-weight: 700;
+  }
+  table.data tbody tr:nth-child(even) { background: var(--gold-soft); }
+  .scrollwrap { overflow-x: auto; margin: 0.6rem 0; border-radius: 10px; }
+
+  .folder-tree {
+    font-family: "Noto Sans JP", monospace; font-size: 0.86rem; line-height: 1.95;
+    background: #fafbfd; border: 1px dashed var(--line-soft); border-radius: 12px;
+    padding: 0.9rem 1rem; white-space: pre-wrap; word-break: break-word;
+  }
+  .folder-tree .note { color: var(--ink-soft); font-size: 0.8rem; }
+
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li {
+    display: flex; gap: 0.55rem; align-items: flex-start;
+    padding: 0.4rem 0; border-bottom: 1px dashed var(--line-soft); font-size: 0.94rem;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .box {
+    flex: 0 0 auto; width: 1.15rem; height: 1.15rem; border-radius: 5px;
+    border: 2px solid var(--gold); margin-top: 0.15rem;
+  }
+
+  .goodbad { display: grid; gap: 1rem; }
+  .goodbad .card h3.good { color: #2f7d4f; }
+  .goodbad .card h3.bad { color: var(--alert); }
+  .goodbad .card h3 .ico.good { color: #2f7d4f; }
+  .goodbad .card h3 .ico.bad { color: var(--alert); }
+
+  footer {
+    text-align: center; color: var(--ink-soft); font-size: 0.82rem;
+    padding: 2.2rem 1rem 3rem;
+  }
+
+  .backtop {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: calc(1.1rem + env(safe-area-inset-bottom));
+    z-index: 30;
+    width: 3rem; height: 3rem; border-radius: 50%;
+    background: var(--navy); color: #fdf6e3; border: none;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 22px -8px var(--shadow);
+    opacity: 0; pointer-events: none; transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .backtop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .backtop .ico { width: 1.3em; height: 1.3em; }
+
+  .companion {
+    display: block; text-decoration: none;
+    background: var(--gold-soft);
+    border: 1.5px solid var(--navy);
+    color: var(--navy); border-radius: 12px; padding: 1rem 1.1rem;
+    margin: 1.6rem 0 0.4rem;
+  }
+  .companion .lbl { font-size: 0.76rem; letter-spacing: 0.1em; color: var(--gold); font-weight: 700; }
+  .companion .name { font-family: "Zen Maru Gothic", sans-serif; font-weight: 900; font-size: 1.05rem; margin-top: 0.2rem; display: flex; align-items: center; gap: 0.4em; color: var(--navy); }
+
+  /* ---------- diagrams ---------- */
+  figure.diagram {
+    margin: 0.8rem 0 1rem; padding: 0.9rem 0.7rem 0.7rem;
+    background: #fafbfd; border: 1.5px solid var(--line); border-radius: 14px;
+  }
+  figure.diagram svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  figure.diagram figcaption {
+    margin-top: 0.6rem; font-size: 0.82rem; color: var(--ink-soft);
+    text-align: center; line-height: 1.6;
+  }
+  .dg-node-fill { fill: #ffffff; stroke: var(--navy); stroke-width: 2; }
+  .dg-node-fill.hub { fill: var(--navy); stroke: var(--navy); }
+  .dg-node-fill.accent { fill: var(--gold-soft); stroke: var(--gold); }
+  .dg-node-fill.muted { fill: #eef0f3; stroke: #9aa1ad; }
+  .dg-node-fill.peak { fill: var(--alert-soft); stroke: var(--alert); }
+  .dg-text { fill: var(--navy); font-family: "Noto Sans JP", sans-serif; font-size: 12px; text-anchor: middle; }
+  .dg-text.tl { text-anchor: start; }
+  .dg-text.tr { text-anchor: end; }
+  .dg-text.on-hub { fill: #ffffff; font-weight: 700; }
+  .dg-text.small { font-size: 10.5px; fill: var(--ink-soft); }
+  .dg-text.label { font-size: 10.5px; fill: var(--ink-soft); }
+  .dg-text.badge { fill: #ffffff; font-weight: 900; font-size: 13px; text-anchor: middle; }
+  .dg-line { stroke: var(--navy); stroke-width: 2; fill: none; }
+  .dg-line.soft { stroke: #9aa1ad; stroke-width: 1.6; }
+  .dg-line.gold { stroke: var(--gold); stroke-width: 2.2; }
+
+  .illust-cover { display: block; margin: 0 auto 0.9rem; width: min(220px, 60%); height: auto; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .backtop, .chev { transition: none; }
+  }
+
+  .diagram-print { display: none; }
+
+  @page { size: A4; margin: 15mm 14mm; }
+  @media print {
+    html, body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .backtop, .toggle-all, .quicknav-wrap { display: none !important; }
+    .hero { break-inside: avoid; }
+    .chapter-head { break-after: avoid; break-inside: avoid; }
+    h2, h3 { break-after: avoid-page; }
+    .card, .callout, .stake, .role-card, .goodbad > div, details.phase, table, .folder-tree {
+      break-inside: avoid;
+    }
+    figure.diagram { break-inside: avoid; }
+    .diagram-tall-print { max-width: 120mm; margin-left: auto; margin-right: auto; }
+    .diagram-screen { display: none; }
+    .diagram-print { display: block; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15 20c.3-2.6 2-4.6 4.3-5.2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M8.5 13l2.3 2.3L16 10.5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/></symbol>
+    <symbol id="i-yen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 7l4 6 4-6M12 13v5M9.5 14h5M9.5 16.5h5"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
+    <symbol id="i-hall" viewBox="0 0 24 24"><path d="M4 21V10l8-6 8 6v11"/><path d="M4 21h16M8 21v-6h8v6M7 10v.01M12 8v.01M17 10v.01"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5C6 4.5 9 4.5 12 6c3-1.5 6-1.5 8-0.5v13c-2-1-5-1-8 .5-3-1.5-6-1.5-8-.5z"/><path d="M12 6v13"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.3"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="4"/><rect x="5" y="13" width="14" height="8"/><path d="M12 9v12"/><path d="M12 9c0-2.5-2-5-4-4-1.3.7-1 3 1 4M12 9c0-2.5 2-5 4-4 1.3.7 1 3-1 4"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 5c3-1.5 5 1.5 8 0s5 1.5 5 1.5V13c-2-1.5-4-1.5-5.5-1s-4.5 1-7.5-1z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4l6 2 6-2v14l-6 2-6-2-6 2V6z"/><path d="M9 4v14M15 6v14"/></symbol>
+    <symbol id="i-clap" viewBox="0 0 24 24"><path d="M8 3c3 4 3 8 6 10M14 3c1.5 3 1 5 3 7"/><circle cx="12" cy="15" r="6"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v11h14V9M10 13h4"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M2 12l4-3 4 2 4-2 4 3-3 4-3-2-2 2-2-2-3 2z"/></symbol>
+  </defs>
+</svg>
+
+<div class="hero">
+  <div class="titlebox">
+    <svg class="illust-cover" viewBox="0 0 200 120" role="img" aria-label="「第11回定期演奏会」と書かれたリボンバナーと音符のイラスト">
+      <polygon points="78,78 78,110 92,100 106,110 106,78" fill="#0f2a54"/>
+      <polygon points="94,78 94,110 108,100 122,110 122,78" fill="#173d78"/>
+      <polygon points="18,58 40,40 160,40 182,58 160,76 40,76" fill="#173d78"/>
+      <text x="100" y="55" text-anchor="middle" fill="#ffffff" font-family="'Zen Maru Gothic',sans-serif" font-weight="900" font-size="13">第11回</text>
+      <text x="100" y="70" text-anchor="middle" fill="#f4ecd8" font-family="'Zen Maru Gothic',sans-serif" font-weight="700" font-size="11">定期演奏会</text>
+      <g fill="none" stroke="#b8860b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 34V14l12-3v17"/>
+        <path d="M168 30V10l12-3v17"/>
+      </g>
+      <circle cx="17" cy="35" r="4.2" fill="#b8860b"/>
+      <circle cx="29" cy="31" r="4.2" fill="#b8860b"/>
+      <circle cx="165" cy="31" r="4.2" fill="#b8860b"/>
+      <circle cx="177" cy="27" r="4.2" fill="#b8860b"/>
+    </svg>
+    <span class="eyebrow"><svg class="ico"><use href="#i-note"/></svg> 保護者会役員会 事務局マニュアル・図解版</span>
+    <h1>定期演奏会運営ハンドブック</h1>
+    <p class="sub">豊見城中学校吹奏楽部 定期演奏会＆3年生を送る会</p>
+    <p class="meta">令和8年度版・第1版　2026年8月作成　次回：第11回定期演奏会（2027年3月開催予定）</p>
+  </div>
+</div>
+
+<div class="quicknav-wrap">
+  <nav class="quicknav" aria-label="章へのショートカット">
+    <a href="#s0"><svg class="ico"><use href="#i-clap"/></svg>趣旨</a>
+    <a href="#s1"><svg class="ico"><use href="#i-book"/></svg>使い方</a>
+    <a href="#s2"><svg class="ico"><use href="#i-people"/></svg>体制</a>
+    <a href="#s3"><svg class="ico"><use href="#i-calendar"/></svg>年間予定</a>
+    <a href="#s4"><svg class="ico"><use href="#i-flag"/></svg>フェーズ</a>
+    <a href="#s5"><svg class="ico"><use href="#i-yen"/></svg>予算</a>
+    <a href="#s6"><svg class="ico"><use href="#i-bulb"/></svg>振り返り</a>
+    <a href="#s7"><svg class="ico"><use href="#i-map"/></svg>付録</a>
+  </nav>
+</div>
+
+<main>
+
+  <p class="lede">
+    参考資料：2024年度・2025年度の実施フォルダ一式／【完成版】役員引継ぎ資料（R7⇒R8）／
+    部活動結成会資料（保護者会会則）／令和8年度_部活動結成会(更新)
+  </p>
+
+  <!-- 0 -->
+  <section class="chapter" id="s0">
+    <div class="chapter-head">
+      <div class="chapter-num">0</div>
+      <h2><svg class="ico"><use href="#i-clap"/></svg>定期演奏会の趣旨と関係者の役割</h2>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-note"/></svg>趣旨</h3>
+      <p>定期演奏会は、吹奏楽部が1年間の活動の成果を発表し、日頃お世話になっている地域・協賛企業・保護者へ感謝を伝える場です。同日には「3年生を送る会」も行い、後輩たちが3年間の活動に感謝を伝えます。</p>
+      <ul>
+        <li><strong>生徒にとって</strong>：日頃の練習の集大成を発表し、達成感・自信を得る機会</li>
+        <li><strong>地域にとって</strong>：地域に愛される学校・部活動として交流を深める機会</li>
+        <li><strong>保護者会にとって</strong>：協賛広告・寄付を通じて部活動運営資金を確保する、年間最大の事業</li>
+      </ul>
+      <p class="subhead"><svg class="ico"><use href="#i-people"/></svg>学年ごとの意義</p>
+      <ul>
+        <li><strong>1年生</strong>：入部から1年間の成長を最も感じられる機会</li>
+        <li><strong>2年生</strong>：イベントの中心となりリーダーシップを発揮する機会</li>
+        <li><strong>3年生</strong>：部活動最後の締めくくりとなる一大イベント</li>
+      </ul>
+      <div class="callout">
+        <svg class="ico"><use href="#i-yen"/></svg>
+        <p><strong>もう一つの趣旨：楽器購入費の創出。</strong>協賛金・寄付金による収益は、老朽化した楽器の買い替え費用にも充てられています。前例では、ある年度の楽器購入費が<mark>約180万円</mark>（フルート、ユーフォニアム、ホルン、トロンボーン、クラリネット、譜面台等）にのぼりました。「発表の場」であると同時に「部活動を維持するための資金事業」でもあることを共有しておくと、協賛依頼への納得感が高まります。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-handshake"/></svg>関係者と役割</h3>
+      <p>この行事は、生徒・顧問の先生・保護者全体・地域の協賛企業/寄付者など、多くの関係者の協力によって成り立っています。</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 400 520" role="img" aria-label="保護者会役員会が顧問・生徒と直接やり取りする一方、協賛企業・寄付者への依頼と集金は保護者会全体（各保護者）が担い、その結果を役員会に集約する相関図">
+          <defs>
+            <marker id="arrA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10Z" fill="#173d78"/>
+            </marker>
+            <marker id="arrAgold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0L10 5L0 10Z" fill="#b8860b"/>
+            </marker>
+          </defs>
+          <line x1="200" y1="170" x2="200" y2="88" class="dg-line" marker-start="url(#arrA)" marker-end="url(#arrA)"/>
+          <line x1="270" y1="200" x2="290" y2="200" class="dg-line" marker-start="url(#arrA)" marker-end="url(#arrA)"/>
+          <line x1="200" y1="230" x2="200" y2="302" class="dg-line" marker-start="url(#arrA)" marker-end="url(#arrA)"/>
+          <line x1="255" y1="88" x2="330" y2="172" class="dg-line" marker-start="url(#arrA)" marker-end="url(#arrA)"/>
+
+          <line x1="180" y1="358" x2="180" y2="440" class="dg-line gold" marker-end="url(#arrAgold)"/>
+          <line x1="220" y1="440" x2="220" y2="358" class="dg-line gold" marker-end="url(#arrAgold)"/>
+
+          <text x="192" y="112" class="dg-text label tr">日程やプログラム、</text>
+          <text x="192" y="125" class="dg-text label tr">全体的な進め方などについて</text>
+          <text x="192" y="138" class="dg-text label tr">共有・調整</text>
+          <text x="280" y="163" class="dg-text label" text-anchor="middle">サポート</text>
+          <text x="304" y="108" class="dg-text label tl">プログラムの</text>
+          <text x="304" y="121" class="dg-text label tl">組み立て</text>
+          <text x="208" y="266" class="dg-text label tl">呼びかけ</text>
+          <text x="125" y="392" class="dg-text label tl">依頼・訪問</text>
+          <text x="228" y="410" class="dg-text label tl">協賛金・</text>
+          <text x="228" y="422" class="dg-text label tl">寄付金</text>
+
+          <rect x="130" y="170" width="140" height="60" rx="12" class="dg-node-fill hub"/>
+          <text x="200" y="194" class="dg-text on-hub">保護者会役員会</text>
+          <text x="200" y="211" class="dg-text on-hub small" style="fill:#e9edf5">（事務局）</text>
+
+          <rect x="140" y="32" width="120" height="56" rx="12" class="dg-node-fill"/>
+          <text x="200" y="64" class="dg-text">顧問の先生</text>
+
+          <rect x="290" y="172" width="100" height="56" rx="12" class="dg-node-fill"/>
+          <text x="340" y="204" class="dg-text">生徒</text>
+
+          <rect x="120" y="302" width="160" height="56" rx="12" class="dg-node-fill accent"/>
+          <text x="200" y="327" class="dg-text">保護者会全体</text>
+          <text x="200" y="342" class="dg-text small">（各保護者が対応）</text>
+
+          <rect x="115" y="442" width="170" height="56" rx="12" class="dg-node-fill"/>
+          <text x="200" y="467" class="dg-text">協賛企業・寄付者</text>
+          <text x="200" y="482" class="dg-text small">（企業・個人）</text>
+        </svg>
+        <figcaption>役員会は事務局として顧問・生徒と直接やり取りする一方、企業・個人への協賛金・寄付金の依頼と一次集金は保護者会全体（各保護者）が担当し、役員会はそれを集約する。</figcaption>
+      </figure>
+
+      <div class="stake-grid">
+        <div class="stake office">
+          <div class="name"><svg class="ico"><use href="#i-people"/></svg>保護者会役員会（事務局）</div>
+          <ul>
+            <li>全体の進行管理（スケジュール、予算、協賛金の管理）</li>
+            <li>顧問の先生・生徒・保護者全体・外部業者（印刷、DVD等）・協賛企業との連絡調整</li>
+            <li>保護者説明会や当日運営に必要な準備の統括、役割分担の決定</li>
+            <li>保護者会会則に基づく正式な組織（会長・副会長・書記・会計・監事）で構成</li>
+          </ul>
+        </div>
+        <div class="stake">
+          <div class="name"><svg class="ico"><use href="#i-clap"/></svg>保護者会（保護者全体）</div>
+          <ul>
+            <li>協賛広告の訪問依頼、生徒送迎、当日の手伝い（受付・駐車場案内等）への協力</li>
+            <li>保護者会費の納入</li>
+            <li>役員会からの連絡・呼びかけへの対応</li>
+          </ul>
+        </div>
+        <div class="stake">
+          <div class="name"><svg class="ico"><use href="#i-book"/></svg>顧問の先生</div>
+          <ul>
+            <li>演奏内容、練習・タイムスケジュールなど部活動運営の中心を担う</li>
+            <li>学校施設（公民館予約含む）や生徒指導に関する窓口</li>
+            <li>パンフレットの挨拶文、当日の進行内容等について役員会と調整</li>
+          </ul>
+        </div>
+        <div class="stake">
+          <div class="name"><svg class="ico"><use href="#i-note"/></svg>生徒</div>
+          <ul>
+            <li>演奏・発表そのものの主役</li>
+            <li>楽器運搬、会場設営、募金活動、展示物制作など、できることは生徒自身が行う</li>
+            <li>3年生を送る会では、後輩から感謝を伝えられる立場になる</li>
+          </ul>
+        </div>
+        <div class="stake">
+          <div class="name"><svg class="ico"><use href="#i-gift"/></svg>協賛企業・寄付者</div>
+          <ul>
+            <li>地域の企業・店舗・個人等、広告掲載や寄付金という形で活動を支援</li>
+            <li>パンフレット配布や当日案内を通じて、活動報告・感謝を伝える対象</li>
+            <li>翌年度以降も継続してご協力いただけるよう、丁寧な依頼・お礼・領収書発行を行う</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="subhead"><svg class="ico"><use href="#i-yen"/></svg>資金調達の仕組み（誰が何をするか）</p>
+      <p>定期演奏会の運営費は、次の流れで集まります。</p>
+      <ol>
+        <li>役員会（事務局）が保護者会全体に「協賛金・寄付金を集めてほしい」と呼びかける</li>
+        <li>各保護者が、自分の知り合いの企業・お店・個人などへ個別に訪問・依頼する</li>
+        <li>引き受けてもらえたら、まず依頼した保護者（担当者）が協賛金・寄付金を受け取る</li>
+        <li>担当保護者が役員会（会計）へ協賛金を引き渡し、役員会が集約・入金する</li>
+      </ol>
+      <div class="callout"><svg class="ico"><use href="#i-flag"/></svg><p>「役員会 → 保護者会全体 → 企業・個人（協賛企業・寄付者）→ 担当保護者 → 役員会」という一つの輪になっています。</p></div>
+      <p>進捗は「広告協賛リスト」で事業者ごとに次のステータスを管理します。</p>
+      <p style="font-size:0.9rem;color:var(--ink-soft)">アクション中（企業側へ確認中）→ 確約 → 担当者が協賛金受領 → 役員会が協賛金受領 → 広告デザイン決定済 → 完了（役員受領＆デザイン確定済）</p>
+      <p style="font-size:0.88rem;color:var(--ink-soft)">広告協賛リストの主な管理項目：学年／担当保護者名／事業者名／ステータス／広告サイズ／今年度の広告料金／役員会協賛金受領金額／デザイン渡し方法／備考</p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="chapter" id="s1">
+    <div class="chapter-head">
+      <div class="chapter-num">1</div>
+      <h2><svg class="ico"><use href="#i-book"/></svg>このマニュアルについて</h2>
+    </div>
+    <div class="card">
+      <p>本マニュアルは、令和8年度（2026年度）役員会が次回の定期演奏会を運営するための実務ガイドです（関係者全体の役割は0章を参照）。2024年度の資料が最も整理されていたためベースとし、2025年度の実施内容・反省点を反映して作成しました。</p>
+      <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>使い方</p>
+      <ol>
+        <li>結成式（4月）後、まず全体に目を通し年間の流れを把握する</li>
+        <li>「4. 段階ごとの準備内容」を進行管理表として使い、実施日・担当者を書き込む</li>
+        <li>運営終了後は「6. 振り返り」に気づきを追記し、次の役員へ引き継ぐ</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="chapter" id="s2">
+    <div class="chapter-head">
+      <div class="chapter-num">2</div>
+      <h2><svg class="ico"><use href="#i-people"/></svg>定期演奏会期間中の役割分担</h2>
+    </div>
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-check"/></svg>役員会の正式な体制（保護者会会則）</h3>
+      <div class="role-grid">
+        <div class="role-card"><div class="name">会長</div><div class="count">1名</div><p>2年生保護者／総会で選出。顧問との窓口・保護者会全体の統括</p></div>
+        <div class="role-card"><div class="name">副会長</div><div class="count">2名</div><p>1年生保護者。会長不在時に代行</p></div>
+        <div class="role-card"><div class="name">書記</div><div class="count">2名</div><p>1・2年生保護者 各1名。議事録作成</p></div>
+        <div class="role-card"><div class="name">会計</div><div class="count">2名</div><p>1・2年生保護者 各1名。会計管理・顧問との費用精算窓口</p></div>
+        <div class="role-card"><div class="name">監事</div><div class="count">2名</div><p>3年生保護者。会計監査</p></div>
+      </div>
+      <div class="callout">
+        <svg class="ico"><use href="#i-bulb"/></svg>
+        <p>定期演奏会期間中はこれに加え、<strong>パンフレット担当（2名目安）・広告協賛担当・DVD担当・当日運営担当（複数名）</strong>を役員会内外の協力保護者で割り振ります。</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-chat"/></svg>連絡体制</h3>
+      <ul>
+        <li>役員グループLINE：役員間の情報共有用</li>
+        <li>保護者全体グループLINE（年度ごとに作成）：連絡・チケット受付・写真共有用</li>
+        <li>会長⇔顧問：部活動全般の連絡窓口／会計⇔顧問：費用・精算の窓口</li>
+        <li>保護者全体LINEは初回登録時に「学年・生徒名」を入力してもらい生徒と紐づける</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="chapter" id="s3">
+    <div class="chapter-head">
+      <div class="chapter-num">3</div>
+      <h2><svg class="ico"><use href="#i-calendar"/></svg>年間スケジュール</h2>
+    </div>
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-flag"/></svg>定期演奏会 業務の流れ</h3>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 640" role="img" aria-label="4月の結成式から翌3月の本番・引継ぎまでを経て、また来年度の結成式へ戻る、8段階の年間サイクル図">
+          <defs>
+            <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0 0L10 5L0 10Z" fill="#173d78"/>
+            </marker>
+            <marker id="arrBgold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0 0L10 5L0 10Z" fill="#b8860b"/>
+            </marker>
+          </defs>
+
+          <line x1="366" y1="109" x2="433" y2="137" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="502" y1="203" x2="530" y2="270" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="531" y1="366" x2="504" y2="433" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="437" y1="502" x2="370" y2="530" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="274" y1="531" x2="207" y2="504" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="138" y1="437" x2="111" y2="370" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="109" y1="274" x2="137" y2="207" class="dg-line" marker-end="url(#arrB)"/>
+          <line x1="203" y1="138" x2="270" y2="111" class="dg-line gold" marker-end="url(#arrBgold)"/>
+          <text x="200" y="105" class="dg-text label" text-anchor="middle">来年度へ</text>
+
+          <circle cx="320" cy="90" r="50" class="dg-node-fill hub"/>
+          <text x="320" y="86" class="dg-text on-hub">4月</text>
+          <text x="320" y="100" class="dg-text on-hub" style="font-size:10.5px">結成式</text>
+
+          <circle cx="483" cy="157" r="50" class="dg-node-fill"/>
+          <text x="483" y="153" class="dg-text">8月</text>
+          <text x="483" y="167" class="dg-text small">会場予約</text>
+
+          <circle cx="550" cy="320" r="50" class="dg-node-fill"/>
+          <text x="550" y="311" class="dg-text">10-11月</text>
+          <text x="550" y="325" class="dg-text small">保護者</text>
+          <text x="550" y="337" class="dg-text small">説明会</text>
+
+          <circle cx="483" cy="483" r="50" class="dg-node-fill"/>
+          <text x="483" y="479" class="dg-text">12月</text>
+          <text x="483" y="493" class="dg-text small">協賛締切</text>
+
+          <circle cx="320" cy="550" r="50" class="dg-node-fill"/>
+          <text x="320" y="541" class="dg-text">1-2月</text>
+          <text x="320" y="555" class="dg-text small">パンフ制作</text>
+
+          <circle cx="157" cy="483" r="50" class="dg-node-fill"/>
+          <text x="157" y="474" class="dg-text">3月上旬</text>
+          <text x="157" y="488" class="dg-text small">備品準備</text>
+
+          <circle cx="90" cy="320" r="50" class="dg-node-fill peak"/>
+          <text x="90" y="311" class="dg-text">3月中旬</text>
+          <text x="90" y="325" class="dg-text small">本番・</text>
+          <text x="90" y="337" class="dg-text small">送る会</text>
+
+          <circle cx="157" cy="157" r="50" class="dg-node-fill accent"/>
+          <text x="157" y="148" class="dg-text">3月下旬</text>
+          <text x="157" y="162" class="dg-text small">振り返り・</text>
+          <text x="157" y="174" class="dg-text small">引継ぎ</text>
+        </svg>
+        <figcaption>結成式（4月）から本番・3年生を送る会（3月中旬）を経て、振り返りと引継ぎを終えると、また来年度の結成式へと1年のサイクルが続く。</figcaption>
+      </figure>
+
+      <ul class="timeline">
+        <li><span class="when">8月中旬</span><br><span class="what">会場予約（豊見城市中央公民館）</span></li>
+        <li><span class="when">8月末まで</span><br><span class="what">開催日を顧問に確定</span></li>
+        <li><span class="when">10月末〜11月上旬</span><br><span class="what">ミニ演奏会＆保護者説明会（詳細は別紙「開催準備マニュアル」参照）</span></li>
+        <li><span class="when">10月〜12月中旬</span><br><span class="what">協賛広告の訪問・依頼</span></li>
+        <li><span class="when">12月中旬</span><br><span class="what">協賛広告の依頼締切目安</span></li>
+        <li><span class="when">1月初旬</span><br><span class="what">DVD業者へ依頼</span></li>
+        <li><span class="when">1月下旬</span><br><span class="what">広告デザイン確定・協賛金回収目安</span></li>
+        <li><span class="when">1〜2月</span><br><span class="what">役員会で当日の役割分担を決定</span></li>
+        <li><span class="when">2月</span><br><span class="what">パンフレット校正・入稿</span></li>
+        <li><span class="when">3月上旬</span><br><span class="what">パンフレット納品／チラシ・プログラム印刷／備品準備</span></li>
+        <li><span class="when">3月中旬</span><br><span class="what">ホール練習＆本番／3年生を送る会</span></li>
+        <li><span class="when">3月下旬〜4月</span><br><span class="what">お礼・精算・資料整理・引継ぎ</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-note"/></svg>令和8年度の主な日程（結成会資料より）</h3>
+      <div class="scrollwrap">
+        <table class="data">
+          <thead><tr><th>予定日</th><th style="text-align:left">行事</th></tr></thead>
+          <tbody>
+            <tr><td>2026年5月末頃</td><td style="text-align:left">豊見城中学校野球部応援（※未定）</td></tr>
+            <tr><td>2026/6/13-14</td><td style="text-align:left">沖縄県吹奏楽祭</td></tr>
+            <tr><td>2026/7/22-24</td><td style="text-align:left">沖縄県吹奏楽コンクール</td></tr>
+            <tr><td>2026/12/5-6</td><td style="text-align:left">沖縄県アンサンブルコンテスト</td></tr>
+            <tr><td>2027/1/30-31</td><td style="text-align:left">沖縄県ソロコンテスト</td></tr>
+            <tr><td>2027/3/13(土)</td><td style="text-align:left"><strong>豊見城中学校定期演奏会</strong>（本マニュアルの対象行事）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <svg class="ico"><use href="#i-bulb"/></svg>
+        <p><strong>令和8年度の状況：</strong>会場予約・利用申請は2026年8月時点で完了。3/13(土)終日で正式予約（他行事や駐車場事情により3/14(日)は使用不可のため、今年度は1日開催）。</p>
+      </div>
+      <div class="callout warn">
+        <svg class="ico"><use href="#i-warn"/></svg>
+        <p><strong>要確認・未確定：</strong>例年は本番前日にホール練習（リハーサル）を実施していたが、今年度は2日連続でホールを予約できず、本番当日のみの確保となった。ホール練習を実施するか、実施する場合はいつ・どこで行うかを顧問へ確認する必要がある（フェーズG参照）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="chapter" id="s4">
+    <div class="chapter-head">
+      <div class="chapter-num">4</div>
+      <h2><svg class="ico"><use href="#i-flag"/></svg>段階ごとの準備内容（フェーズA〜J）</h2>
+    </div>
+
+    <figure class="diagram diagram-screen">
+      <svg viewBox="0 0 340 790" role="img" aria-label="フェーズAの会場予約からフェーズJの引継ぎまで、10段階が矢印でつながる縦の流れ図。フェーズHの本番が最大の山場。">
+        <defs>
+          <marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0L10 5L0 10Z" fill="#173d78"/>
+          </marker>
+        </defs>
+        <line x1="170" y1="77" x2="170" y2="99" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="153" x2="170" y2="175" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="229" x2="170" y2="251" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="305" x2="170" y2="327" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="381" x2="170" y2="403" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="457" x2="170" y2="479" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="533" x2="170" y2="555" class="dg-line" marker-end="url(#arrC)"/>
+        <line x1="170" y1="609" x2="170" y2="631" class="dg-line gold" marker-end="url(#arrC)"/>
+        <text x="255" y="600" class="dg-text label">本番同日</text>
+        <line x1="170" y1="685" x2="170" y2="707" class="dg-line" marker-end="url(#arrC)"/>
+
+        <g>
+          <rect x="15" y="23" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="50" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="55" class="dg-text badge">A</text>
+          <text x="70" y="46" class="dg-text tl">会場予約・準備開始</text>
+          <text x="70" y="62" class="dg-text small tl">8月</text>
+        </g>
+        <g>
+          <rect x="15" y="99" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="126" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="131" class="dg-text badge">B</text>
+          <text x="70" y="122" class="dg-text tl">保護者説明会・協賛依頼開始</text>
+          <text x="70" y="138" class="dg-text small tl">10月末〜11月上旬</text>
+        </g>
+        <g>
+          <rect x="15" y="175" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="202" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="207" class="dg-text badge">C</text>
+          <text x="70" y="198" class="dg-text tl">協賛広告・協賛金の収集</text>
+          <text x="70" y="214" class="dg-text small tl">説明会当日〜1月下旬</text>
+        </g>
+        <g>
+          <rect x="15" y="251" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="278" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="283" class="dg-text badge">D</text>
+          <text x="70" y="274" class="dg-text tl">パンフレット制作</text>
+          <text x="70" y="290" class="dg-text small tl">11月〜2月</text>
+        </g>
+        <g>
+          <rect x="15" y="327" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="354" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="359" class="dg-text badge">E</text>
+          <text x="70" y="350" class="dg-text tl">DVD関連</text>
+          <text x="70" y="366" class="dg-text small tl">1月</text>
+        </g>
+        <g>
+          <rect x="15" y="403" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="430" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="435" class="dg-text badge">F</text>
+          <text x="70" y="426" class="dg-text tl">当日運営の準備</text>
+          <text x="70" y="442" class="dg-text small tl">2月〜3月上旬</text>
+        </g>
+        <g>
+          <rect x="15" y="479" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="506" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="511" class="dg-text badge">G</text>
+          <text x="70" y="502" class="dg-text tl">定期演奏会（ホール練習日）</text>
+          <text x="70" y="518" class="dg-text small tl">3月中旬</text>
+        </g>
+        <g>
+          <rect x="15" y="555" width="310" height="54" rx="10" class="dg-node-fill peak"/>
+          <circle cx="42" cy="582" r="19" class="dg-node-fill" style="fill:#c00000;stroke:#c00000"/>
+          <text x="42" y="587" class="dg-text badge">H</text>
+          <text x="70" y="578" class="dg-text tl">定期演奏会（本番）</text>
+          <text x="70" y="594" class="dg-text small tl">3月中旬・最大の山場</text>
+        </g>
+        <g>
+          <rect x="15" y="631" width="310" height="54" rx="10" class="dg-node-fill accent"/>
+          <circle cx="42" cy="658" r="19" class="dg-node-fill" style="fill:#b8860b;stroke:#b8860b"/>
+          <text x="42" y="663" class="dg-text badge">I</text>
+          <text x="70" y="654" class="dg-text tl">3年生を送る会</text>
+          <text x="70" y="670" class="dg-text small tl">本番同日</text>
+        </g>
+        <g>
+          <rect x="15" y="707" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="734" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="739" class="dg-text badge">J</text>
+          <text x="70" y="730" class="dg-text tl">事後対応・次年度への引継ぎ</text>
+          <text x="70" y="746" class="dg-text small tl">3月下旬〜4月</text>
+        </g>
+      </svg>
+      <figcaption>会場予約（A）から本番（H）を経て引継ぎ（J）まで、10のフェーズが一本の鎖のようにつながる。3年生を送る会（I）は本番と同日に行う。</figcaption>
+    </figure>
+
+    <figure class="diagram diagram-print">
+      <svg viewBox="0 0 700 410" role="img" aria-label="フェーズAの会場予約からフェーズJの引継ぎまで、10段階を2列に分けてつなげた流れ図。左列はA〜E、右列は下から上へF〜J。フェーズHの本番が最大の山場。">
+        <defs>
+          <marker id="arrCp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0L10 5L0 10Z" fill="#173d78"/>
+          </marker>
+        </defs>
+        <line x1="170" y1="77" x2="170" y2="99" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="170" y1="153" x2="170" y2="175" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="170" y1="229" x2="170" y2="251" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="170" y1="305" x2="170" y2="327" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="325" y1="354" x2="365" y2="354" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="520" y1="327" x2="520" y2="305" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="520" y1="251" x2="520" y2="229" class="dg-line" marker-end="url(#arrCp)"/>
+        <line x1="520" y1="175" x2="520" y2="153" class="dg-line gold" marker-end="url(#arrCp)"/>
+        <text x="545" y="168" class="dg-text label tl">本番同日</text>
+        <line x1="520" y1="99" x2="520" y2="77" class="dg-line" marker-end="url(#arrCp)"/>
+
+        <g>
+          <rect x="15" y="23" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="50" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="55" class="dg-text badge">A</text>
+          <text x="70" y="46" class="dg-text tl">会場予約・準備開始</text>
+          <text x="70" y="62" class="dg-text small tl">8月</text>
+        </g>
+        <g>
+          <rect x="15" y="99" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="126" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="131" class="dg-text badge">B</text>
+          <text x="70" y="122" class="dg-text tl">保護者説明会・協賛依頼開始</text>
+          <text x="70" y="138" class="dg-text small tl">10月末〜11月上旬</text>
+        </g>
+        <g>
+          <rect x="15" y="175" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="202" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="207" class="dg-text badge">C</text>
+          <text x="70" y="198" class="dg-text tl">協賛広告・協賛金の収集</text>
+          <text x="70" y="214" class="dg-text small tl">説明会当日〜1月下旬</text>
+        </g>
+        <g>
+          <rect x="15" y="251" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="278" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="283" class="dg-text badge">D</text>
+          <text x="70" y="274" class="dg-text tl">パンフレット制作</text>
+          <text x="70" y="290" class="dg-text small tl">11月〜2月</text>
+        </g>
+        <g>
+          <rect x="15" y="327" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="42" cy="354" r="19" class="dg-node-fill hub"/>
+          <text x="42" y="359" class="dg-text badge">E</text>
+          <text x="70" y="350" class="dg-text tl">DVD関連</text>
+          <text x="70" y="366" class="dg-text small tl">1月</text>
+        </g>
+
+        <g>
+          <rect x="365" y="327" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="392" cy="354" r="19" class="dg-node-fill hub"/>
+          <text x="392" y="359" class="dg-text badge">F</text>
+          <text x="420" y="350" class="dg-text tl">当日運営の準備</text>
+          <text x="420" y="366" class="dg-text small tl">2月〜3月上旬</text>
+        </g>
+        <g>
+          <rect x="365" y="251" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="392" cy="278" r="19" class="dg-node-fill hub"/>
+          <text x="392" y="283" class="dg-text badge">G</text>
+          <text x="420" y="274" class="dg-text tl">定期演奏会（ホール練習日）</text>
+          <text x="420" y="290" class="dg-text small tl">3月中旬</text>
+        </g>
+        <g>
+          <rect x="365" y="175" width="310" height="54" rx="10" class="dg-node-fill peak"/>
+          <circle cx="392" cy="202" r="19" class="dg-node-fill" style="fill:#c00000;stroke:#c00000"/>
+          <text x="392" y="207" class="dg-text badge">H</text>
+          <text x="420" y="198" class="dg-text tl">定期演奏会（本番）</text>
+          <text x="420" y="214" class="dg-text small tl">3月中旬・最大の山場</text>
+        </g>
+        <g>
+          <rect x="365" y="99" width="310" height="54" rx="10" class="dg-node-fill accent"/>
+          <circle cx="392" cy="126" r="19" class="dg-node-fill" style="fill:#b8860b;stroke:#b8860b"/>
+          <text x="392" y="131" class="dg-text badge">I</text>
+          <text x="420" y="122" class="dg-text tl">3年生を送る会</text>
+          <text x="420" y="138" class="dg-text small tl">本番同日</text>
+        </g>
+        <g>
+          <rect x="365" y="23" width="310" height="54" rx="10" class="dg-node-fill"/>
+          <circle cx="392" cy="50" r="19" class="dg-node-fill hub"/>
+          <text x="392" y="55" class="dg-text badge">J</text>
+          <text x="420" y="46" class="dg-text tl">事後対応・次年度への引継ぎ</text>
+          <text x="420" y="62" class="dg-text small tl">3月下旬〜4月</text>
+        </g>
+      </svg>
+      <figcaption>左列はA（会場予約）→E（DVD関連）の順、右列は下から上へF（当日運営）→本番（H）→3年生を送る会（I）→J（引継ぎ）の順に読む。E→Fは列をまたぐ横矢印で接続。</figcaption>
+    </figure>
+
+    <button class="toggle-all" id="toggleAll" type="button" aria-expanded="false">
+      <svg class="ico"><use href="#i-check"/></svg>すべて開く
+    </button>
+
+    <details class="phase" id="phaseA">
+      <summary>
+        <div class="phase-badge">A</div>
+        <div class="phase-title"><span class="t">会場予約・準備開始</span><span class="p">時期：8月</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>定期演奏会の開催日（予備日含む）を確認する</li>
+          <li>豊見城市中央公民館の予約手続きを進める</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul><li><strong>顧問</strong> → 開催希望日、会場予約の可否</li></ul>
+        <p class="subhead"><svg class="ico"><use href="#i-archive"/></svg>提出書類</p>
+        <ul><li>公民館使用許可申請書、駐車場（公園）使用許可申請書 等</li></ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>生涯学習振興課から毎年11月に学校へ届く「次年度公民館利用予約案内」を使えば学校名義で事前予約でき無料。一般申込みは抽選になり希望日を取れないおそれがあるため、必ず学校経由のルートを使う。8月末までに開催日を確定させる（後工程すべての起点になるため）。</p>
+        </div>
+        <div class="callout warn">
+          <svg class="ico"><use href="#i-warn"/></svg>
+          <p>「予約（仮予約）」と「利用許可申請書の提出（本申請）」は別の手続き。仮予約だけで安心して申請を忘れないよう注意（2025年度は申請が翌年2月までずれ込み、直前に気づいて慌てて提出した実例あり）。詳しい注意点は7章付録を参照。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseB">
+      <summary>
+        <div class="phase-badge">B</div>
+        <div class="phase-title"><span class="t">保護者説明会・協賛広告依頼の開始</span><span class="p">時期：10月末〜11月上旬</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>ミニ演奏会＆保護者説明会の準備・開催</li>
+          <li>協賛広告の訪問先・担当者の割り振り</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>顧問</strong> → 説明会の日程、資料の大量印刷依頼</li>
+          <li><strong>保護者全体</strong> → 説明会参加の呼びかけ（家族・知人の鑑賞可否も含め案内）</li>
+        </ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>会場は音楽室前多目的広場＆第2音楽室が前例。開催日は年度により土曜／日曜が変動する（2024年度：10/26(土)、2025年度：11/2(日)）。2・3年生は前年と同じ訪問先に割り振ると引き継ぎがスムーズ。</p>
+        </div>
+        <div class="callout">
+          <svg class="ico"><use href="#i-book"/></svg>
+          <p>当日の台本・配布資料・進行の詳細は、別紙「<strong>ミニ演奏会＆保護者説明会 開催準備マニュアル</strong>」を参照。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseC">
+      <summary>
+        <div class="phase-badge">C</div>
+        <div class="phase-title"><span class="t">協賛広告・協賛金の収集</span><span class="p">時期：説明会当日〜1月下旬</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>役員会から保護者会全体へ、協賛広告・寄付金依頼への協力を呼びかける</li>
+          <li>趣意書・広告依頼一式の配布</li>
+          <li>各保護者による協賛事業者への訪問・依頼（①訪問→②説明・書類預け→③先方へ確認→④担当保護者が協賛金を受取り→⑤デザイン確認、の順で進める）</li>
+          <li>広告デザイン・サイズの確定</li>
+          <li>担当保護者が受領した協賛金を役員会（会計）へ引き渡し、リストを更新</li>
+          <li>請求書・領収書の発行</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>協賛事業者</strong> → デザイン内容、金額確定、支払いタイミングの希望（各保護者経由）</li>
+          <li><strong>担当保護者</strong> → 受領済みの協賛金額、事業者情報</li>
+          <li><strong>会計</strong> → 入金確認、領収書発行、振込希望時の口座案内・請求書対応</li>
+        </ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>企業・個人への直接の依頼と協賛金の一次受領は<strong>各保護者</strong>が行う。役員会は「保護者会全体への呼びかけ」と「担当保護者から役員会への協賛金集約」を担う。広告協賛リストで事業者ごとに「アクション中→確約→担当者受領→役員会受領→デザイン決定→完了」のステータスを管理する。</p>
+        </div>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>依頼締切は12月中旬目安（2025年度実績：12/14。状況により延長可）。デザイン確認結果の報告締切は1月中旬目安（2025年度実績：1/11）、デザインの最終確定は1月末目安（2025年度実績：1/30。以降の変更は原則不可）。パンフレット制作の進行があるため期日厳守。</p>
+        </div>
+        <div class="callout warn">
+          <svg class="ico"><use href="#i-warn"/></svg>
+          <p>重複依頼を避けるため、担当が決まっていない事業者へは「依頼を受けていますか」と一声かける／寄付は5,000円単位・「寄付金」名目の領収書希望にも対応する等、実務上の注意点は「ミニ演奏会＆保護者説明会 開催準備マニュアル」3章⑧に詳細あり。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseD">
+      <summary>
+        <div class="phase-badge">D</div>
+        <div class="phase-title"><span class="t">パンフレット制作</span><span class="p">時期：11月〜2月</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>業者選定・打合せ、表紙デザイン検討</li>
+          <li>挨拶文（会長・校長・部長・顧問）、卒業生メッセージの依頼・取りまとめ</li>
+          <li>プログラム、パート紹介、活動のあゆみ、掲載写真の準備</li>
+          <li>個人情報の掲載可否確認</li>
+          <li>校正（複数回）・入稿・印刷・配布</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>印刷業者</strong> → デザイン・校正・納期</li>
+          <li><strong>顧問</strong> → 挨拶文・写真等の内容確認</li>
+          <li><strong>生徒（卒業生）</strong> → メッセージ収集</li>
+        </ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>パンフレット担当は2名体制が前例（前回：新栄印刷さまに依頼）。チラシは表紙を流用し300部程度印刷した実績あり。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseE">
+      <summary>
+        <div class="phase-badge">E</div>
+        <div class="phase-title"><span class="t">DVD関連</span><span class="p">時期：1月</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>業者選定・依頼、撮影内容の打合せ</li>
+          <li>購入案内の配布、注文取りまとめ</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>DVD業者</strong> → 撮影日・料金・注文枚数</li>
+          <li><strong>保護者全体</strong> → 購入希望の取りまとめ</li>
+        </ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>前例：チャンネル１さまに1月初旬依頼。編集に約1か月かかるため、卒業生保護者にはLINEグループを退会しないよう案内する。20枚以上注文で1枚あたり3,500円（税込）が前例。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseF">
+      <summary>
+        <div class="phase-badge">F</div>
+        <div class="phase-title"><span class="t">当日運営の準備</span><span class="p">時期：2月〜3月上旬</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>役員会で当日の役割分担を決定（受付・駐車場・キーパー・撮影・募金箱・設営等）</li>
+          <li>タイムスケジュールの確認・周知</li>
+          <li>楽器運搬・生徒送迎の方法決定</li>
+          <li>会場設営備品（横断幕・案内札・ポスター等）の準備</li>
+          <li>弁当・差し入れの手配</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>顧問</strong> → タイムスケジュール、送迎方法</li>
+          <li><strong>OB（卒業生）保護者</strong> → 当日の手伝い（撮影禁止案内・ドアマン等）</li>
+        </ul>
+        <div class="callout">
+          <svg class="ico"><use href="#i-bulb"/></svg>
+          <p>生徒送迎は各保護者への個別依頼方式にすると取りまとめ負担が軽い。横断幕の数字部分は生地を21回（2037年）分まで注文済み。</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseG">
+      <summary>
+        <div class="phase-badge">G</div>
+        <div class="phase-title"><span class="t">定期演奏会（ホール練習日）</span><span class="p">&nbsp;</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <div class="callout warn">
+          <svg class="ico"><use href="#i-warn"/></svg>
+          <p><strong>要確認・未確定：</strong>ホール練習を実施するか、実施する場合はいつ・どこで行うかを顧問へ確認する（例年は本番前日に実施していたが、今年度は2日連続でホールを予約できず、本番当日〔3/13〕のみの確保となったため）。</p>
+        </div>
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること（実施する場合）</p>
+        <ul>
+          <li>舞台設営、照明・音響の打合せ</li>
+          <li>カメラマンの撮影位置確認</li>
+          <li>エントランス設営（装飾・写真展・差し入れ預かり）</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>顧問</strong> → ホール練習を行うか、行う場合の日時・会場</li>
+          <li><strong>会場（公民館）担当者</strong> → 設営可能なタイミング、照明・音響</li>
+        </ul>
+        <div class="callout"><svg class="ico"><use href="#i-bulb"/></svg><p>照明の明るさは必ず実際に確認する。ホール練習ができない年は、当日搬入・当日準備での本番運営となるため、搬入〜設営〜リハーサル〜本番の時間配分をより綿密に組む必要がある。</p></div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseH">
+      <summary>
+        <div class="phase-badge">H</div>
+        <div class="phase-title"><span class="t">定期演奏会（本番）</span><span class="p">&nbsp;</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>開演前の全体写真撮影</li>
+          <li>学校保管用DVDの購入</li>
+          <li>役割分担どおりの当日運営</li>
+          <li>片付け（再利用できる装飾は持ち帰る）</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul><li><strong>顧問</strong> → 進行、司会（前例：副顧問へ依頼）</li></ul>
+        <div class="callout"><svg class="ico"><use href="#i-bulb"/></svg><p>終了後は慌ただしいため、全体写真は開演前に撮る。</p></div>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseI">
+      <summary>
+        <div class="phase-badge">I</div>
+        <div class="phase-title"><span class="t">3年生を送る会</span><span class="p">本番同日</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>必要な物（ケーキ・飲み物・お菓子等）の確認・準備</li>
+          <li>協力金での楽器購入（2月末注文目安）</li>
+          <li>定期演奏会の装飾を音楽室へ飾り付け</li>
+          <li>差し入れをくれた方を生徒へ紹介</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>生徒</strong> → 必要な物の確認</li>
+          <li><strong>会計</strong> → 楽器購入の予算確認</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase" id="phaseJ">
+      <summary>
+        <div class="phase-badge">J</div>
+        <div class="phase-title"><span class="t">事後対応・次年度への引継ぎ</span><span class="p">時期：3月下旬〜4月</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <p class="subhead"><svg class="ico"><use href="#i-check"/></svg>やること</p>
+        <ul>
+          <li>会計監査・収支報告資料の作成</li>
+          <li>結成式資料（会計報告・予算案・新役員選出）の準備</li>
+          <li>2年前のイベント写真の削除（個人情報保護、結成式前に実施）</li>
+          <li>本年度フォルダの整理</li>
+          <li>1年の振り返りを本マニュアル6章へ追記</li>
+        </ul>
+        <p class="subhead"><svg class="ico"><use href="#i-chat"/></svg>誰に確認するか</p>
+        <ul>
+          <li><strong>監事</strong> → 会計監査</li>
+          <li><strong>新役員</strong> → 引継ぎ</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section class="chapter" id="s5">
+    <div class="chapter-head">
+      <div class="chapter-num">5</div>
+      <h2><svg class="ico"><use href="#i-yen"/></svg>予算の目安</h2>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-gift"/></svg>保護者会費（会則より）</h3>
+      <ul>
+        <li>部活動育成費：4,000円/年（学校が定める全部活動共通の費用）</li>
+        <li>保護者会費（部費）：18,000円/年（前期9,000円・6月末納期／後期9,000円・10月末納期、3年生は前期分のみ）</li>
+      </ul>
+      <p class="subhead"><svg class="ico"><use href="#i-book"/></svg>一般会計の使途（会則第10条）</p>
+      <p>修理・消耗品費／輸送費／レッスン費／研究費／保護者会運営費／交際費／研修費／楽器購入（役員の了承を得て購入）／その他（ホール練習費用等）</p>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-note"/></svg>定期演奏会 収益の仕組み（説明会資料より）</h3>
+      <ul>
+        <li>主な収入：協賛広告料</li>
+        <li>主な支出：印刷費（パンフレット、ポスター等）、その他（文具・雑貨・備品類等）</li>
+        <li>残金は、その年度の収入の一部として翌年度以降の活動費に充てられる</li>
+        <li>当日のお客さんの入場料は<mark>無料</mark></li>
+      </ul>
+
+      <figure class="diagram diagram-tall-print">
+        <svg viewBox="0 0 320 600" role="img" aria-label="協賛企業・寄付者からの協賛金がまず担当保護者に渡り、担当保護者から役員会（定期演奏会の収支）へ引き渡され、支出と剰余金に分かれ、剰余金が保護者会の一般会計に合流して楽器購入費と活動費になり、最終的に生徒・部活動へ還元されるお金の流れ図">
+          <defs>
+            <marker id="arrD" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0 0L10 5L0 10Z" fill="#173d78"/>
+            </marker>
+          </defs>
+
+          <line x1="160" y1="62" x2="160" y2="98" class="dg-line" marker-end="url(#arrD)"/>
+          <text x="168" y="83" class="dg-text label tl">協賛金・寄付金</text>
+
+          <line x1="160" y1="142" x2="160" y2="178" class="dg-line" marker-end="url(#arrD)"/>
+          <text x="168" y="163" class="dg-text label tl">引き渡し</text>
+
+          <line x1="160" y1="222" x2="85" y2="265" class="dg-line soft" marker-end="url(#arrD)"/>
+          <line x1="160" y1="222" x2="245" y2="265" class="dg-line" marker-end="url(#arrD)"/>
+
+          <line x1="245" y1="315" x2="160" y2="358" class="dg-line" marker-end="url(#arrD)"/>
+
+          <line x1="160" y1="402" x2="85" y2="445" class="dg-line" marker-end="url(#arrD)"/>
+          <line x1="160" y1="402" x2="245" y2="445" class="dg-line" marker-end="url(#arrD)"/>
+
+          <line x1="85" y1="495" x2="150" y2="530" class="dg-line" marker-end="url(#arrD)"/>
+          <line x1="245" y1="495" x2="170" y2="530" class="dg-line" marker-end="url(#arrD)"/>
+
+          <rect x="50" y="18" width="220" height="44" rx="10" class="dg-node-fill"/>
+          <text x="160" y="44" class="dg-text">協賛企業・寄付者</text>
+
+          <rect x="30" y="98" width="260" height="44" rx="10" class="dg-node-fill accent"/>
+          <text x="160" y="124" class="dg-text">担当保護者が受領</text>
+
+          <rect x="50" y="178" width="220" height="44" rx="10" class="dg-node-fill hub"/>
+          <text x="160" y="204" class="dg-text on-hub">定期演奏会 収支（役員会）</text>
+
+          <rect x="15" y="265" width="140" height="50" rx="10" class="dg-node-fill muted"/>
+          <text x="85" y="286" class="dg-text small">支出</text>
+          <text x="85" y="300" class="dg-text small">（印刷費・備品等）</text>
+
+          <rect x="175" y="265" width="140" height="50" rx="10" class="dg-node-fill accent"/>
+          <text x="245" y="295" class="dg-text">剰余金</text>
+
+          <rect x="40" y="358" width="240" height="44" rx="10" class="dg-node-fill hub"/>
+          <text x="160" y="376" class="dg-text on-hub">保護者会 一般会計</text>
+          <text x="160" y="390" class="dg-text on-hub small">（部活動全体）</text>
+
+          <rect x="15" y="445" width="140" height="50" rx="10" class="dg-node-fill accent"/>
+          <text x="85" y="475" class="dg-text">楽器購入費</text>
+
+          <rect x="175" y="445" width="140" height="50" rx="10" class="dg-node-fill">
+          </rect>
+          <text x="245" y="468" class="dg-text small">活動費</text>
+          <text x="245" y="482" class="dg-text small">（レッスン・遠征等）</text>
+
+          <rect x="45" y="530" width="230" height="44" rx="10" class="dg-node-fill hub"/>
+          <text x="160" y="556" class="dg-text on-hub">生徒・部活動へ還元</text>
+        </svg>
+        <figcaption>協賛金・寄付金はまず依頼した保護者（担当者）が受け取り、役員会へ引き渡してから「定期演奏会」の収支に入る。剰余金は保護者会の一般会計（部活動全体）に合流し、楽器購入費や活動費として生徒に還元される。</figcaption>
+      </figure>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-yen"/></svg>定期演奏会単体の収支（過去実績）</h3>
+      <div class="scrollwrap">
+        <table class="data">
+          <caption>年度により協賛数や支出内容は変動するため、あくまで目安です</caption>
+          <thead><tr><th>項目</th><th>令和4年度</th><th>令和5年度</th><th>令和6年度</th></tr></thead>
+          <tbody>
+            <tr><td>協賛広告料</td><td>565,000円</td><td>770,000円</td><td>895,000円</td></tr>
+            <tr><td>寄付金</td><td>20,000円</td><td>152,233円</td><td>215,421円</td></tr>
+            <tr><td>収入合計</td><td>585,000円</td><td>922,233円</td><td>1,110,421円</td></tr>
+            <tr><td>支出</td><td>▲237,452円</td><td>▲197,078円</td><td>▲202,243円</td></tr>
+            <tr><td>収益</td><td>347,548円</td><td>725,155円</td><td>908,178円</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.88rem;color:var(--ink-soft);margin-top:0.6rem">主な支出：学校保管用DVD購入、パンフレット/チラシ印刷、横断幕等の設営備品。方針：協力金は年度内に生徒へ還元（楽器購入等）。高額楽器等は繰越も検討可。</p>
+    </div>
+
+    <div class="card">
+      <h3><svg class="ico"><use href="#i-archive"/></svg>部活動全体の会計運用方針</h3>
+      <ul>
+        <li>定期演奏会の収益（広告協賛金残高）は、吹奏楽連盟加盟費・コンクール参加費・活動費・レッスン費・楽器運搬費・楽器購入費・備品/楽器消耗品費・修繕費など、部活動全体の年間運営費に組み込まれて使われる</li>
+        <li>楽器購入費が年によって大きく変動する（前例：ある年度は約180万円）ため、将来の楽器購入に備えて<strong>「毎年約50万円程度の積立」「銀行口座残高100万円程度の水準を維持」</strong>を目安とする方針が示されている（2025年度時点の運用方針）</li>
+        <li>単年度の収支だけでなく、複数年度の残高推移を見て予算計画を立てることが望ましい</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="chapter" id="s6">
+    <div class="chapter-head">
+      <div class="chapter-num">6</div>
+      <h2><svg class="ico"><use href="#i-bulb"/></svg>振り返り・申し送り事項</h2>
+    </div>
+    <div class="goodbad">
+      <div class="card">
+        <h3 class="good"><svg class="ico good"><use href="#i-clap"/></svg>良かった点（継続推奨）</h3>
+        <ul>
+          <li>経験者保護者を役員グループへ招く（人数は多すぎない範囲で）</li>
+          <li>イベント「お知らせ」の様式化で会長の負担軽減</li>
+          <li>11〜12月の保護者向けミニ演奏会を継続開催</li>
+          <li>「生徒主体」を徹底し、保護者会はサポートに徹する</li>
+          <li>生徒送迎は各保護者への個別依頼方式にして取りまとめ負担を軽減</li>
+          <li>イベントごとに担当を具体的に割り振る（撮影係・キーパー係等）</li>
+          <li>協力金は年度内に生徒へ還元</li>
+          <li>公民館予約は学校経由の事前予約枠を利用（11月案内を見逃さない）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="bad"><svg class="ico bad"><use href="#i-warn"/></svg>改善したい点</h3>
+        <ul>
+          <li>役員内の業務分担が不十分になりがち → 各自が主体的に確認し合う体制を作る</li>
+          <li>会長に顧問対応・保護者対応が集中しがち → 他役員が意識的にフォロー</li>
+          <li>意思決定は会長が抱え込まず役員会に諮る（会長以外にファシリテーター役も）</li>
+          <li>会計業務（やりとり・資料整理）の負担が大きい → フォロー体制を作る</li>
+          <li>資料整理が手薄になりがち → 簡単なマニュアル整備を継続する（本資料もその一環）</li>
+          <li>Googleドライブ等の共有範囲は個人情報保護の観点から必要最小限にする</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lede">※上記は「前回の対応」であり唯一の正解ではありません。年度により顧問や状況が変わるため、参考情報としてご活用ください。</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="chapter" id="s7">
+    <div class="chapter-head">
+      <div class="chapter-num">7</div>
+      <h2><svg class="ico"><use href="#i-map"/></svg>付録</h2>
+    </div>
+
+    <details class="phase">
+      <summary>
+        <div class="phase-badge"><svg class="ico" style="width:1.1em;height:1.1em"><use href="#i-handshake"/></svg></div>
+        <div class="phase-title"><span class="t">主な外部業者</span><span class="p">前例・年度により変動あり</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <ul>
+          <li>パンフレット印刷：新栄印刷さま</li>
+          <li>DVD撮影／制作：チャンネル１さま（那覇市字小禄）</li>
+          <li>楽器購入：クラフト楽器</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase">
+      <summary>
+        <div class="phase-badge"><svg class="ico" style="width:1.1em;height:1.1em"><use href="#i-hall"/></svg></div>
+        <div class="phase-title"><span class="t">会場予約に関する重要事項</span><span class="p">&nbsp;</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <ul>
+          <li>一般受付は3月第一営業日だが、学校名義なら11月案内で事前予約可・無料</li>
+          <li>抽選を避けるため必ず学校経由のルートを使う</li>
+          <li>「予約（仮予約）」と「利用許可申請書の提出（本申請）」は別の手続き。仮予約だけで満足して申請を忘れがち（2025年度は申請が翌年2月までずれ込んだ実例あり）。役員引継ぎ資料に両方を明記し、担当者が変わっても引き継がれるようにする</li>
+          <li>ホール利用申請と駐車場利用申請は窓口・書類が別（駐車場は公民館とは別の建物にあることが多く、生涯学習振興課で場所を確認できる）</li>
+          <li>「公民館使用料減免申請書」の提出を忘れると使用料が発生する場合がある。学校名義利用は本来無料のため、減免申請書の提出漏れに注意</li>
+          <li>減免申請書には顧問の押印が必要な場合がある（学校印は不要なことが多いが窓口担当者により対応が異なるため要確認。「前年は押印なしで受領された」実績を伝えると通ることがある）</li>
+          <li>「公民館使用日時」の原本は公民館窓口で直接受け取る必要があり、コピーでは代用できない</li>
+          <li>申請書の「担当者」欄と実際の提出者が異なる場合は、事前に窓口へ確認する</li>
+          <li>本番当日の会場予約とは別に、ホール練習（リハーサル）日の予約も必要。引継ぎ資料から漏れやすいため必ず明記しておく。予約は1年前から可能な場合があるため早めに動く</li>
+          <li>希望日程が他行事（市内大会等）と重なり取れないことがある。その場合は「リハーサルなし・当日搬入」「1日開催」「開演時刻を遅らせて駐車場の回転を図る」などの代替案を役員会・顧問で検討する</li>
+          <li>駐車場が少ない年は、来場者への乗り合わせ案内など事前の周知を検討する</li>
+          <li>予約・申請の受付時期（本番の半年前目安 等）や次年度・翌々年度分の予約が並行して動くため、「いつ・誰が・何を（仮予約／本申請）したか」を都度記録し、役員間で時系列を共有する</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="phase">
+      <summary>
+        <div class="phase-badge"><svg class="ico" style="width:1.1em;height:1.1em"><use href="#i-bulb"/></svg></div>
+        <div class="phase-title"><span class="t">今後の検討事項</span><span class="p">&nbsp;</span></div>
+        <svg class="chev"><use href="#i-arrow"/></svg>
+      </summary>
+      <div class="phase-body">
+        <ul>
+          <li>07〜10・LINEメッセージ・アンケート等、未整備フォルダは資料発生次第作成する</li>
+          <li>顧問の異動・兼任状況に応じて連携方法を調整する</li>
+        </ul>
+      </div>
+    </details>
+
+  </section>
+
+</main>
+
+<footer>豊見城中学校吹奏楽部 保護者会役員会 ／ 令和8年度版・第1版</footer>
+
+<button class="backtop" id="backtop" type="button" aria-label="ページ上部へ戻る">
+  <svg class="ico"><use href="#i-arrow"/></svg>
+</button>
+
+<script>
+  var backtop = document.getElementById('backtop');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 500) backtop.classList.add('show');
+    else backtop.classList.remove('show');
+  }, { passive: true });
+  backtop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  var toggleAll = document.getElementById('toggleAll');
+  var phases = document.querySelectorAll('details.phase');
+  toggleAll.addEventListener('click', function () {
+    var expand = toggleAll.getAttribute('aria-expanded') !== 'true';
+    phases.forEach(function (d) { d.open = expand; });
+    toggleAll.setAttribute('aria-expanded', expand ? 'true' : 'false');
+    toggleAll.innerHTML = expand
+      ? '<svg class="ico"><use href="#i-check"/></svg>すべて閉じる'
+      : '<svg class="ico"><use href="#i-check"/></svg>すべて開く';
+  });
+</script>
