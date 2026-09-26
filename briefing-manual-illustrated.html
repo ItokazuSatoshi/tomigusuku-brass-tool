@@ -1306,7 +1306,7 @@
 <script>
 (function () {
   var FIRESTORE_DOC_ID = 'briefing';
-  var EDITOR_EMAIL = 'core@gusukulab-handbook.local'; // グスクラボと共用のFirebaseプロジェクトの編集者ログイン
+  var EDITOR_EMAIL = 'core@tomigusuku-brass.local'; // tomigushuku-brass専用Firebaseプロジェクトの編集者ログイン
   var CLAUDE_PREVIEW_PASSWORD = 'suisou2026'; // Claudeプレビュー専用の簡易パスワード（本番の認証には使われません）
 
   var launcher = document.getElementById('adminEditLauncher');
@@ -1354,12 +1354,12 @@
     var fsMod = await import('https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js');
     var authMod = await import('https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js');
     var firebaseConfig = {
-      apiKey: "AIzaSyB7hQCnXAL9aqACCnpenPyY9jMDLZcQxek",
-      authDomain: "gusukulab-handbook.firebaseapp.com",
-      projectId: "gusukulab-handbook",
-      storageBucket: "gusukulab-handbook.firebasestorage.app",
-      messagingSenderId: "366780142394",
-      appId: "1:366780142394:web:edaa67ae39662987607603"
+      apiKey: "AIzaSyBDhVZCARNspG8jn03YEw51XmE9skQRWhA",
+      authDomain: "tomigushuku-brass.firebaseapp.com",
+      projectId: "tomigushuku-brass",
+      storageBucket: "tomigushuku-brass.firebasestorage.app",
+      messagingSenderId: "814869503284",
+      appId: "1:814869503284:web:43bf60e8104f8ea9d29961"
     };
     var app = appMod.initializeApp(firebaseConfig);
     var db = fsMod.getFirestore(app);
