@@ -1305,7 +1305,9 @@
 
 <script>
 (function () {
-  var EDIT_PASSWORD = "suisou2026"; // 管理者用パスワード。変更したい場合はこの1行の文字列を書き換えて保存してください。
+  var FIRESTORE_DOC_ID = 'briefing';
+  var EDITOR_EMAIL = 'core@gusukulab-handbook.local'; // グスクラボと共用のFirebaseプロジェクトの編集者ログイン
+  var CLAUDE_PREVIEW_PASSWORD = 'suisou2026'; // Claudeプレビュー専用の簡易パスワード（本番の認証には使われません）
 
   var launcher = document.getElementById('adminEditLauncher');
   var gate = document.getElementById('adminGate');
@@ -1319,6 +1321,9 @@
   var main = document.querySelector('main');
   var heroBox = document.querySelector('.hero .titlebox');
   var editableRoots = [heroBox, main].filter(Boolean);
+
+  var isClaude = !!window.claude;
+  var firebaseReady = null;
 
   function openGate() {
     errEl.hidden = true;
@@ -1342,11 +1347,74 @@
     if (!document.body.classList.contains('editing-mode')) openGate();
   });
   cancelBtn.addEventListener('click', closeGate);
-  unlockBtn.addEventListener('click', function () {
-    if (pwInput.value === EDIT_PASSWORD) {
+
+  async function loadFirebase() {
+    if (firebaseReady) return firebaseReady;
+    var appMod = await import('https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js');
+    var fsMod = await import('https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js');
+    var authMod = await import('https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js');
+    var firebaseConfig = {
+      apiKey: "AIzaSyB7hQCnXAL9aqACCnpenPyY9jMDLZcQxek",
+      authDomain: "gusukulab-handbook.firebaseapp.com",
+      projectId: "gusukulab-handbook",
+      storageBucket: "gusukulab-handbook.firebasestorage.app",
+      messagingSenderId: "366780142394",
+      appId: "1:366780142394:web:edaa67ae39662987607603"
+    };
+    var app = appMod.initializeApp(firebaseConfig);
+    var db = fsMod.getFirestore(app);
+    var auth = authMod.getAuth(app);
+    firebaseReady = {
+      db: db,
+      auth: auth,
+      doc: fsMod.doc,
+      setDoc: fsMod.setDoc,
+      onSnapshot: fsMod.onSnapshot,
+      signInWithEmailAndPassword: authMod.signInWithEmailAndPassword
+    };
+    return firebaseReady;
+  }
+
+  function cleanInnerHtml(el) {
+    var clone = el.cloneNode(true);
+    clone.removeAttribute('contenteditable');
+    clone.querySelectorAll('[contenteditable]').forEach(function (n) { n.removeAttribute('contenteditable'); });
+    return clone.innerHTML;
+  }
+
+  // 実データの読み込み・リアルタイム反映（Claudeプレビュー以外のみ）
+  if (!isClaude) {
+    loadFirebase().then(function (fb) {
+      var ref = fb.doc(fb.db, 'handbook', FIRESTORE_DOC_ID);
+      fb.onSnapshot(ref, function (snap) {
+        if (!snap.exists()) return;
+        var data = snap.data();
+        if (heroBox && typeof data.heroHtml === 'string') heroBox.innerHTML = data.heroHtml;
+        if (main && typeof data.mainHtml === 'string') main.innerHTML = data.mainHtml;
+      }, function (err) { console.error('Firestore同期エラー', err); });
+    }).catch(function (e) { console.error('Firebase読み込みエラー', e); });
+  }
+
+  unlockBtn.addEventListener('click', async function () {
+    errEl.hidden = true;
+    var pw = pwInput.value;
+    if (isClaude) {
+      if (pw === CLAUDE_PREVIEW_PASSWORD) {
+        enterEditMode();
+      } else {
+        errEl.hidden = false;
+      }
+      return;
+    }
+    unlockBtn.disabled = true;
+    try {
+      var fb = await loadFirebase();
+      await fb.signInWithEmailAndPassword(fb.auth, EDITOR_EMAIL, pw);
       enterEditMode();
-    } else {
+    } catch (e) {
       errEl.hidden = false;
+    } finally {
+      unlockBtn.disabled = false;
     }
   });
   pwInput.addEventListener('keydown', function (e) {
@@ -1381,108 +1449,16 @@
     catch (e) { return null; }
   })();
 
-  var GITHUB_OWNER = 'ItokazuSatoshi';
-  var GITHUB_REPO = 'tomigusuku-brass-tool';
-  var GITHUB_BRANCH = 'main';
-  var TOKEN_KEY = 'adminGithubToken';
-
-  function getGithubToken() {
-    try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; }
-  }
-  function setGithubToken(t) {
-    try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {}
-  }
-  function clearGithubToken() {
-    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
-  }
-
-  function utf8ToBase64(str) {
-    var bytes = new TextEncoder().encode(str);
-    var binary = '';
-    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-    return btoa(binary);
-  }
-
-  async function saveToGithub(html) {
-    var token = getGithubToken();
-    if (!token) {
-      token = (window.prompt('この端末で保存するには、GitHubの書き込み用トークン（Fine-grained PAT、このリポジトリのみ・Contents:write権限）を入力してください。\n\n一度入力すれば、この端末のブラウザにのみ保存され、次回からは不要です。') || '').trim();
-      if (!token) return false;
-      setGithubToken(token);
-    }
-    var path = location.pathname.split('/').pop() || '';
-    var apiUrl = 'https://api.github.com/repos/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/contents/' + path;
-    try {
-      var getResp = await fetch(apiUrl, {
-        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
-      });
-      if (getResp.status === 401 || getResp.status === 403) {
-        clearGithubToken();
-        alert('トークンが無効か、権限が不足しています。もう一度トークンを入力してください。');
-        return false;
-      }
-      if (!getResp.ok) throw new Error('現在のファイル取得に失敗しました（' + getResp.status + '）');
-      var getData = await getResp.json();
-      var putResp = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: '管理者編集モードから保存（' + new Date().toISOString() + '）',
-          content: utf8ToBase64(html),
-          sha: getData.sha,
-          branch: GITHUB_BRANCH
-        })
-      });
-      if (putResp.status === 401 || putResp.status === 403) {
-        clearGithubToken();
-        alert('トークンが無効か、権限が不足しています。もう一度トークンを入力してください。');
-        return false;
-      }
-      if (!putResp.ok) throw new Error('保存リクエストに失敗しました（' + putResp.status + '）');
-      return true;
-    } catch (err) {
-      alert('保存に失敗しました：' + (err && err.message ? err.message : err));
-      return false;
-    }
-  }
-
-  async function downloadEditedHtml(html) {
-    var filename = (location.pathname.split('/').pop() || 'edited-page.html');
-    var blob = new Blob([html], { type: 'text/html' });
-    if (window.claude) {
-      try {
-        var downloadsCap = await window.claude.use('downloads');
-        if (downloadsCap) {
-          await downloadsCap.save({ filename: filename, data: blob });
-          return;
-        }
-      } catch (e) {}
-      return;
-    }
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
-  }
-
   saveBtn.addEventListener('click', async function () {
-    var artifactCap = await artifactCapPromise;
-    var html = buildPublishHtml();
-    if (artifactCap) {
+    if (isClaude) {
+      var artifactCap = await artifactCapPromise;
+      if (!artifactCap) { alert('この環境では保存機能を利用できません。'); return; }
       if (!confirm('編集内容を保存し、全員が見るページに公開します。よろしいですか？')) return;
       saveBtn.disabled = true;
       var originalLabel = saveBtn.innerHTML;
       saveBtn.innerHTML = '保存中…';
       try {
-        await artifactCap.publish(html);
+        await artifactCap.publish(buildPublishHtml());
       } catch (err) {
         saveBtn.disabled = false;
         saveBtn.innerHTML = originalLabel;
@@ -1494,19 +1470,26 @@
           alert('保存に失敗しました。もう一度お試しください。');
         }
       }
-    } else {
-      if (!confirm('編集内容を保存します。GitHub上のファイルを直接書き換え、数十秒後に全員に反映されます。よろしいですか？')) return;
-      saveBtn.disabled = true;
-      var originalLabel2 = saveBtn.innerHTML;
-      saveBtn.innerHTML = '保存中…';
-      var ok = await saveToGithub(html);
+      return;
+    }
+    if (!confirm('編集内容を保存します。すぐに全員に反映されます。よろしいですか？')) return;
+    saveBtn.disabled = true;
+    var originalLabel2 = saveBtn.innerHTML;
+    saveBtn.innerHTML = '保存中…';
+    try {
+      var fb = await loadFirebase();
+      var ref = fb.doc(fb.db, 'handbook', FIRESTORE_DOC_ID);
+      await fb.setDoc(ref, {
+        heroHtml: cleanInnerHtml(heroBox),
+        mainHtml: cleanInnerHtml(main),
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      alert('保存しました。');
+    } catch (err) {
+      alert('保存に失敗しました：' + (err && err.message ? err.message : err));
+    } finally {
       saveBtn.disabled = false;
       saveBtn.innerHTML = originalLabel2;
-      if (ok) {
-        alert('保存しました。数十秒後にサイトに反映されます。');
-      } else if (confirm('保存に失敗しました。編集内容をファイルとしてダウンロードしますか？（ダウンロードしたファイルを管理者に送れば手動で反映できます）')) {
-        await downloadEditedHtml(html);
-      }
     }
   });
 })();
